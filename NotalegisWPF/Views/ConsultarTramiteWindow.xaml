@@ -1,0 +1,310 @@
+﻿<Window x:Class="Notalegis.Views.ConsultarTramiteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Consultar Trámite"
+        Icon="/Resources/logo.png"
+        Height="700"
+        Width="550"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header azul -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="White" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Consultar Trámite" FontSize="17" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="16,16,16,0">
+
+                <!-- Información del Cliente -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Información del Cliente" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtCliente" IsReadOnly="True"
+                                 materialDesign:HintAssist.Hint="Cliente"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Información del Trámite -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Información del Trámite" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtTipoTramite" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Tipo de Trámite"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+
+                        <TextBox x:Name="txtNumeroExpediente" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Número de Expediente"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Fechas del Trámite -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Fechas del Trámite" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <DatePicker Grid.Column="0" x:Name="dpFechaCreacion" IsEnabled="False" Margin="0,8"
+                                        materialDesign:HintAssist.Hint="Fecha de Creación"
+                                        materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+
+                            <DatePicker Grid.Column="2" x:Name="dpFechaInicio" IsEnabled="False" Margin="0,8"
+                                        materialDesign:HintAssist.Hint="Fecha de Inicio"
+                                        materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+                        </Grid>
+
+                        <DatePicker x:Name="dpFechaVencimiento" IsEnabled="False" Margin="0,8"
+                                    materialDesign:HintAssist.Hint="Fecha de Vencimiento"
+                                    materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+
+                        <!-- Indicador de días restantes -->
+                        <Border x:Name="borderDiasRestantes" CornerRadius="4" Padding="8,4" Margin="0,8"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="iconDiasRestantes" Width="16" Height="16"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock x:Name="txtDiasRestantes" FontSize="14" FontWeight="Medium"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Estado y Prioridad -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xEA3A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Estado y Prioridad" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ComboBox Grid.Column="0" x:Name="cmbEstado" IsEnabled="False" Margin="0,8"
+                                      materialDesign:HintAssist.Hint="Estado del Trámite"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}">
+                                <ComboBoxItem Content="Pendiente"/>
+                                <ComboBoxItem Content="En Proceso"/>
+                                <ComboBoxItem Content="Documentación Incompleta"/>
+                                <ComboBoxItem Content="Esperando Cliente"/>
+                                <ComboBoxItem Content="Finalizado"/>
+                                <ComboBoxItem Content="Vencido"/>
+                                <ComboBoxItem Content="Cancelado"/>
+                            </ComboBox>
+
+                            <ComboBox Grid.Column="2" x:Name="cmbPrioridad" IsEnabled="False" Margin="0,8"
+                                      materialDesign:HintAssist.Hint="Prioridad"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}">
+                                <ComboBoxItem Content="Baja"/>
+                                <ComboBoxItem Content="Media"/>
+                                <ComboBoxItem Content="Alta"/>
+                                <ComboBoxItem Content="Urgente"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Indicadores visuales -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" x:Name="borderEstado" CornerRadius="4" Padding="8,4"
+                                    HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="iconEstado" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock x:Name="txtEstadoIndicador" FontSize="12" FontWeight="Medium"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" x:Name="borderPrioridad" CornerRadius="4" Padding="8,4"
+                                    HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="iconPrioridad" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock x:Name="txtPrioridadIndicador" FontSize="12" FontWeight="Medium"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Documentación y Monto -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Documentación y Monto" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" x:Name="txtDocumentacionCompleta" IsReadOnly="True" Margin="0,8"
+                                     materialDesign:HintAssist.Hint="Documentación Completa"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     materialDesign:TextFieldAssist.HasClearButton="False"/>
+
+                            <TextBox Grid.Column="2" x:Name="txtMontoEstimado" IsReadOnly="True" Margin="0,8"
+                                     materialDesign:HintAssist.Hint="Monto Estimado"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     materialDesign:TextFieldAssist.HasClearButton="False"/>
+                        </Grid>
+
+                        <!-- Indicador visual de documentación -->
+                        <Border x:Name="borderDocumentacion" CornerRadius="4" Padding="8,4" Margin="0,8"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="iconDocumentacion" Width="14" Height="14"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock x:Name="txtDocumentacionIndicador" FontSize="12" FontWeight="Medium"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Observaciones -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Observaciones" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtObservaciones" IsReadOnly="True"
+                                 materialDesign:HintAssist.Hint="Observaciones del Trámite"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Height="80"
+                                 VerticalScrollBarVisibility="Auto"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Información del Sistema -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Información del Sistema" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="ID del Trámite" FontSize="12" Margin="0,0,0,4"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock x:Name="txtIdTramite" FontWeight="Medium"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Tiempo Transcurrido" FontSize="12" Margin="0,0,0,4"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock x:Name="txtTiempoTranscurrido" FontWeight="Medium"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Margin="0,16,0,0">
+                            <TextBlock Text="Progreso del Trámite" FontSize="12" Margin="0,0,0,4"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <ProgressBar x:Name="progressTramite" Height="8" Margin="0,4,0,8"/>
+                            <TextBlock x:Name="txtProgresoDescripcion" FontSize="12" HorizontalAlignment="Center"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Style="{StaticResource DialogFooterBorder}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Imprimir" Style="{StaticResource SecondaryButton}"
+                        Padding="20,8" Margin="0,0,10,0"
+                        Click="btnImprimir_Click">
+                    <Button.ToolTip>
+                        <ToolTip Content="Imprimir información del trámite"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Content="Cerrar" Style="{StaticResource PrimaryButton}"
+                        Padding="20,8"
+                        Click="btnCerrar_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

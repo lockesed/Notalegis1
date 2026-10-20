@@ -1,0 +1,181 @@
+﻿<Window x:Class="Notalegis.Views.GeneradorEscrituraIAWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Generar Escritura con IA"
+        Icon="/Resources/logo.png"
+        Height="600" Width="900" MinHeight="500" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xECAA;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="White" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel>
+                        <TextBlock Text="GENERADOR DE ESCRITURA CON IA"
+                                   FontSize="16" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="Basándose en la plantilla adjunta"
+                                   FontSize="11" Foreground="White" Opacity="0.85"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Form -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Padding="16" Margin="0,0,8,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Datos de la escritura" FontSize="14" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,14"/>
+
+                        <TextBlock Text="Cliente *" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" FontSize="12"/>
+                        <ComboBox x:Name="cmbCliente" Margin="0,0,0,12"
+                                  DisplayMemberPath="NombreCompleto"
+                                  Style="{StaticResource NotalegisComboBox}"/>
+
+                        <TextBlock Text="Tipo de escritura *" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" FontSize="12"/>
+                        <ComboBox x:Name="cmbTipoEscritura" Margin="0,0,0,12"
+                                  DisplayMemberPath="Nombre"
+                                  Style="{StaticResource NotalegisComboBox}"/>
+                        <TextBlock Text="(No hace falta para generar el borrador — solo para guardarlo)"
+                                   FontSize="10" FontStyle="Italic" TextWrapping="Wrap"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,-8,0,12"/>
+
+                        <TextBlock Text="Número de protocolo *" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" FontSize="12"/>
+                        <TextBox x:Name="txtProtocolo" Margin="0,0,0,12"
+                                 materialDesign:HintAssist.Hint="Ej: 2025/147"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                        <TextBlock Text="Fecha *" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" FontSize="12"/>
+                        <DatePicker x:Name="dpFecha" Margin="0,0,0,12"
+                                    Style="{StaticResource MaterialDesignDatePicker}"/>
+
+                        <Separator Margin="0,0,0,12"/>
+
+                        <TextBlock Text="Instrucciones adicionales" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" FontSize="12"/>
+                        <TextBox x:Name="txtInstrucciones"
+                                 materialDesign:HintAssist.Hint="Cláusulas especiales, condiciones, etc."
+                                 Height="100" TextWrapping="Wrap" AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 Margin="0,0,0,14"/>
+
+                        <Button x:Name="btnGenerar"
+                                Style="{StaticResource PrimaryButton}"
+                                Click="btnGenerar_Click"
+                                Height="40" FontSize="12" FontWeight="Bold"
+                                Padding="0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xECAA;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="GENERAR" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Right: Result -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="16" Margin="8,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Borrador generado (editable)" FontSize="14" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+
+                    <Grid Grid.Row="1">
+                        <TextBox x:Name="txtBorrador"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 TextWrapping="Wrap" AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 FontFamily="Consolas" FontSize="11"
+                                 VerticalAlignment="Stretch"
+                                 TextChanged="txtBorrador_TextChanged"/>
+
+                        <!-- Loading overlay -->
+                        <Border x:Name="borderLoading" Visibility="Collapsed"
+                                Background="#CC000000" CornerRadius="4">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                             Width="50" Height="50" IsIndeterminate="True"
+                                             Foreground="White"/>
+                                <TextBlock Text="Generando..." Foreground="White" FontSize="14" FontWeight="Bold"
+                                           Margin="0,12,0,0" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Bottom -->
+        <Border Grid.Row="2" Style="{StaticResource DialogFooterBorder}">
+            <DockPanel>
+                <TextBlock x:Name="txtEstado" DockPanel.Dock="Left" VerticalAlignment="Center"
+                           Foreground="{StaticResource TextMutedBrush}" FontStyle="Italic" FontSize="12"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                    <Button x:Name="btnExportarWord"
+                            Click="btnExportarWord_Click"
+                            IsEnabled="False"
+                            Height="36" Margin="0,0,8,0" FontWeight="Bold" Padding="16,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                                <Setter Property="Background" Value="#E67E22"/>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            <TextBlock Text="EXPORTAR A WORD" VerticalAlignment="Center" FontSize="11"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnGuardar"
+                            Click="btnGuardar_Click"
+                            IsEnabled="False"
+                            Height="36" Margin="0,0,8,0" FontWeight="Bold" Padding="16,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                                <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            <TextBlock Text="GUARDAR" VerticalAlignment="Center" FontSize="11"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Content="CERRAR"
+                            Style="{StaticResource SecondaryButton}"
+                            Click="btnCerrar_Click"
+                            Height="36" Padding="16,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,169 @@
+﻿<Window x:Class="Notalegis.Views.AuditoriaView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Notalegis — Historial de Auditoría"
+        Icon="/Resources/logo.png"
+        MinHeight="600" MinWidth="900"
+        WindowStartupLocation="CenterOwner"
+        WindowState="Maximized"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE90A;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Historial de Auditoría" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="Exportar Excel" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Margin="0,0,10,0" Click="btnExportar_Click"/>
+                    <Button Content="Cerrar" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Click="btnCerrar_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido -->
+        <Grid Grid.Row="1" Margin="24,20,24,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Filtros -->
+            <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" x:Name="txtFiltroUsuario" Margin="0,0,10,0"
+                             materialDesign:HintAssist.Hint="Filtrar por usuario"
+                             materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                             TextChanged="txtFiltro_TextChanged"/>
+
+                    <ComboBox Grid.Column="1" x:Name="cmbFiltroModulo" Margin="0,0,10,0"
+                              materialDesign:HintAssist.Hint="Filtrar por módulo"
+                              materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                              SelectionChanged="cmbFiltro_SelectionChanged">
+                        <ComboBoxItem Content="Todos"/>
+                        <ComboBoxItem Content="Clientes"/>
+                        <ComboBoxItem Content="Tramites"/>
+                        <ComboBoxItem Content="Turnos"/>
+                        <ComboBoxItem Content="Escrituras"/>
+                        <ComboBoxItem Content="Cobros"/>
+                        <ComboBoxItem Content="Usuarios"/>
+                        <ComboBoxItem Content="Configuración"/>
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="2" x:Name="cmbFiltroAccion" Width="160"
+                              materialDesign:HintAssist.Hint="Acción"
+                              materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                              SelectionChanged="cmbFiltro_SelectionChanged">
+                        <ComboBoxItem Content="Todas"/>
+                        <ComboBoxItem Content="ALTA"/>
+                        <ComboBoxItem Content="MODIFICACION"/>
+                        <ComboBoxItem Content="BAJA"/>
+                    </ComboBox>
+                </Grid>
+            </Border>
+
+            <!-- DataGrid -->
+            <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="0">
+                <Grid>
+                    <DataGrid x:Name="dgAuditoria"
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              SelectionMode="Single"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              EnableRowVirtualization="True"
+                              Style="{StaticResource ModernDataGrid}"
+                              ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                              RowStyle="{StaticResource ModernDataGridRow}"
+                              CellStyle="{StaticResource ModernDataGridCell}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Fecha y hora"
+                                                Binding="{Binding FechaHora, StringFormat=dd/MM/yyyy HH:mm:ss}"
+                                                Width="160"/>
+                            <DataGridTextColumn Header="Usuario" Binding="{Binding Usuario}" Width="120"/>
+                            <DataGridTemplateColumn Header="Acción" Width="110">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="20" Padding="10,4" HorizontalAlignment="Left">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="{StaticResource TextMutedBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Accion}" Value="ALTA">
+                                                            <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Accion}" Value="MODIFICACION">
+                                                            <Setter Property="Background" Value="{StaticResource PrimaryBlueBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Accion}" Value="BAJA">
+                                                            <Setter Property="Background" Value="{StaticResource DangerBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding Accion}" Foreground="White"
+                                                       FontWeight="SemiBold" FontSize="11"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Módulo" Binding="{Binding Modulo}" Width="120"/>
+                            <DataGridTextColumn Header="ID Entidad" Binding="{Binding EntidadId}" Width="80"/>
+                            <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Estado vacío -->
+                    <Border x:Name="borderSinAuditoria" Visibility="Collapsed"
+                            Background="White" CornerRadius="12">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40">
+                            <TextBlock Text="&#xE90A;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="48" Foreground="{StaticResource BorderLightBrush}"
+                                       HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                            <TextBlock Text="No hay registros de auditoría"
+                                       HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Text="Los registros aparecerán aquí conforme se realicen operaciones."
+                                       HorizontalAlignment="Center" FontSize="12"
+                                       Foreground="{StaticResource TextMutedBrush}" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Pie con conteo -->
+        <Border Grid.Row="2" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0"
+                Padding="24,10" Margin="0,12,0,0">
+            <TextBlock x:Name="lblConteo" FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
+        </Border>
+    </Grid>
+</Window>

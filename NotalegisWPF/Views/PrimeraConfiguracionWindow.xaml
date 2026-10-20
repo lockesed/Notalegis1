@@ -1,0 +1,95 @@
+﻿<Window x:Class="Notalegis.Views.PrimeraConfiguracionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Notalegis — Configuración Inicial"
+        Icon="/Resources/logo.png"
+        Width="480" Height="520"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        UseLayoutRounding="True"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Encabezado -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <StackPanel HorizontalAlignment="Center">
+                <Image Source="/Resources/logo.png" Width="48" Height="48" HorizontalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,8"/>
+                <TextBlock Text="NOTALEGIS" FontSize="22" FontWeight="Bold"
+                           HorizontalAlignment="Center" Foreground="White"/>
+                <TextBlock Text="Configuración inicial del sistema" FontSize="13"
+                           Opacity="0.85" HorizontalAlignment="Center" Foreground="White"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Formulario -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Border Style="{StaticResource CardBorder}" Margin="32,24,32,24">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Bienvenido a Notalegis" FontSize="18" FontWeight="Medium"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                    <TextBlock Text="Cree el usuario administrador para comenzar a usar el sistema."
+                               FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
+                               HorizontalAlignment="Center" TextAlignment="Center"
+                               TextWrapping="Wrap" Margin="0,0,0,28"/>
+
+                    <TextBox x:Name="txtUsuarioAdmin"
+                             materialDesign:HintAssist.Hint="Nombre de usuario (mínimo 4 caracteres)"
+                             materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                             Margin="0,0,0,14"
+                             TextChanged="ValidarFormulario"/>
+
+                    <PasswordBox x:Name="txtContrasenia"
+                                 materialDesign:HintAssist.Hint="Contraseña (mínimo 6 caracteres)"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisPasswordBox}"
+                                 Margin="0,0,0,14"
+                                 PasswordChanged="ValidarFormulario"/>
+
+                    <PasswordBox x:Name="txtConfirmarContrasenia"
+                                 materialDesign:HintAssist.Hint="Confirmar contraseña"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisPasswordBox}"
+                                 Margin="0,0,0,8"
+                                 PasswordChanged="ValidarFormulario"/>
+
+                    <!-- Indicador de errores -->
+                    <StackPanel x:Name="panelErrores" Margin="0,0,0,16">
+                        <TextBlock x:Name="txtErrorUsuario"
+                                   Foreground="{StaticResource DangerBrush}"
+                                   FontSize="12" Visibility="Collapsed"/>
+                        <TextBlock x:Name="txtErrorContrasenia"
+                                   Foreground="{StaticResource DangerBrush}"
+                                   FontSize="12" Visibility="Collapsed"/>
+                        <TextBlock x:Name="txtErrorConfirmar"
+                                   Foreground="{StaticResource DangerBrush}"
+                                   FontSize="12" Visibility="Collapsed"/>
+                    </StackPanel>
+
+                    <Button x:Name="btnCrearAdmin"
+                            Style="{StaticResource PrimaryButton}"
+                            Content="CREAR ADMINISTRADOR"
+                            HorizontalAlignment="Stretch"
+                            Height="44"
+                            IsEnabled="False"
+                            Click="btnCrearAdmin_Click"/>
+
+                    <TextBlock x:Name="txtExito"
+                               Text="¡Administrador creado correctamente! Puede iniciar sesión."
+                               Foreground="{StaticResource SuccessBrush}"
+                               FontWeight="Medium" TextAlignment="Center"
+                               TextWrapping="Wrap" Margin="0,12,0,0" Visibility="Collapsed"/>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</Window>

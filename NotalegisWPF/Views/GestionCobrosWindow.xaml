@@ -1,0 +1,746 @@
+﻿<Window x:Class="Notalegis.Views.GestionCobrosWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Gestión de Cobros — Notalegis"
+        Icon="/Resources/logo.png"
+        MinHeight="700" MinWidth="1024"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <Style x:Key="ConceptTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <EventSetter Event="PreviewTextInput" Handler="NumberValidationTextBox"/>
+        </Style>
+
+        <Style x:Key="TotalTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Background" Value="{StaticResource AppBgBrush}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Gestión de Cobros" FontSize="17" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Cálculo de Honorarios y Gastos" FontSize="11"
+                                   Foreground="{StaticResource TextMutedBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Padding="12,7"
+                            Click="HistorialCobrosButton_Click" ToolTip="Ver historial de presupuestos del cliente">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Historial Presupuestos" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Padding="12,7"
+                            Click="HistorialAbonadosButton_Click" ToolTip="Ver historial de abonados del cliente">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8EB;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Historial Abonados" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource PrimaryButton}" Padding="12,7"
+                            Click="EstadisticasButton_Click" ToolTip="Ver estadísticas y gráficos de cobros">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Estadísticas" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Selección Cliente y Expediente -->
+        <Border Grid.Row="1" Style="{StaticResource CardBorder}" Margin="24,16,24,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Cliente -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="SELECCIÓN DE CLIENTE" Style="{StaticResource SectionHeaderStyle}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0"
+                                  Name="ClienteComboBox"
+                                  materialDesign:HintAssist.Hint="Seleccionar Cliente"
+                                  materialDesign:HintAssist.IsFloating="True"
+                                  materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                  IsEditable="True"
+                                  SelectionChanged="ClienteComboBox_SelectionChanged"/>
+                        <Button Grid.Column="1" Style="{StaticResource IconButton}"
+                                Margin="8,0,0,0" ToolTip="Agregar nuevo cliente"
+                                Click="NuevoClienteButton_Click">
+                            <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="16" Foreground="{StaticResource PrimaryBlueBrush}"/>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Expediente y Fecha -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="DATOS DEL COBRO" Style="{StaticResource SectionHeaderStyle}"/>
+                    <TextBox Name="ExpedienteTextBox" Margin="0,0,0,10"
+                             materialDesign:HintAssist.Hint="Número de Expediente"
+                             materialDesign:HintAssist.IsFloating="True"
+                             materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+                    <DatePicker Name="FechaCobroDatePicker"
+                                materialDesign:HintAssist.Hint="Fecha del Cobro"
+                                materialDesign:HintAssist.IsFloating="True"
+                                materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+                </StackPanel>
+
+                <!-- Info del Cliente -->
+                <Border Grid.Column="4" Background="{StaticResource AppBgBrush}"
+                        BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1"
+                        CornerRadius="8" Padding="16" MinWidth="240">
+                    <Grid>
+                        <StackPanel Name="ClienteInfoPanel" Visibility="Collapsed">
+                            <TextBlock Text="INFORMACIÓN DEL CLIENTE"
+                                       FontWeight="SemiBold" FontSize="11"
+                                       Foreground="{StaticResource TextMutedBrush}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock Name="ClienteNombreText"
+                                       FontWeight="SemiBold" FontSize="14"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Name="ClienteDocumentoText"
+                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Name="ClienteTelefonoText"
+                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Name="ClienteEmailText"
+                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                        <TextBlock Name="SinClienteText"
+                                   Text="Seleccione un cliente para ver su información"
+                                   FontStyle="Italic" FontSize="12"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   TextAlignment="Center" TextWrapping="Wrap"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Contenido Principal -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="24,12,24,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sección 1: Impuestos y Honorarios -->
+                <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="IMPUESTOS Y HONORARIOS" Style="{StaticResource SectionHeaderStyle}"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Text="%" FontWeight="Bold"
+                                       TextAlignment="Center" Margin="5,0,5,10"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Grid.Column="2" Text="Base" FontWeight="Bold"
+                                       TextAlignment="Center" Margin="5,0,5,10"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Grid.Column="3" Text="Importe" FontWeight="Bold"
+                                       TextAlignment="Center" Margin="5,0,5,10"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </Grid>
+                        <Separator Margin="0,0,0,10"/>
+
+                        <!-- Impuesto a las Ganancias -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Impuesto a las Ganancias"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="ImpGananciasPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsEnabled="False" ToolTip="Configurable desde Ajustes"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="ImpGananciasBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="ImpGananciasImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- ITI -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Impuesto Trans. Inmuebles (ITI)"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="ITIPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsEnabled="False" ToolTip="Configurable desde Ajustes"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="ITIBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="ITIImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- Impuesto de Sellos -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Impuesto de sellos"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="ImpSellosPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsEnabled="False" ToolTip="Configurable desde Ajustes"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="ImpSellosBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="ImpSellosImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- Tasa General -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Tasa general"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="TasaGeneralPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsEnabled="False" ToolTip="Configurable desde Ajustes"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="TasaGeneralBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="TasaGeneralImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- Sello Matriz -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Sello Matriz - Testimonio"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="SelloMatrizPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="SelloMatrizBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="SelloMatrizImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- Certificados -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Certificados"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="CertificadosPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="CertificadosBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="CertificadosImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- Diligenciamiento -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Diligenciamiento"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="DiligenciamientoPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="DiligenciamientoBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="DiligenciamientoImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- Honorarios -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Honorarios" FontWeight="SemiBold"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="HonorariosPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsEnabled="False" ToolTip="Configurable desde Ajustes"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="HonorariosBase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="HonorariosImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <!-- IVA -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="I.V.A"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="IVAPorc"
+                                     materialDesign:HintAssist.Hint="%"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsEnabled="False" ToolTip="Configurable desde Ajustes"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="2" Name="IVABase"
+                                     materialDesign:HintAssist.Hint="Base"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CalcularImporte"/>
+                            <TextBox Grid.Column="3" Name="IVAImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     IsReadOnly="True"/>
+                        </Grid>
+
+                        <Separator Margin="0,16,0,12"/>
+
+                        <!-- Subtotal 1 -->
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="SUBTOTAL SECCIÓN 1"
+                                       FontWeight="Bold" FontSize="13"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center" Margin="5,0"/>
+                            <TextBox Grid.Column="3" Name="Subtotal1"
+                                     Style="{StaticResource TotalTextBoxStyle}"
+                                     materialDesign:HintAssist.Hint="Total $"
+                                     Foreground="{StaticResource PrimaryBlueBrush}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Sección 2: Certificados y Gestiones -->
+                <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="CERTIFICADOS Y GESTIONES" Style="{StaticResource SectionHeaderStyle}"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Text="Importe" FontWeight="Bold"
+                                       TextAlignment="Center" Margin="5,0,5,10"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </Grid>
+                        <Separator Margin="0,0,0,10"/>
+
+                        <!-- Escritura de Compraventa -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Escritura de Compraventa"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="EscrituraCompraventa"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Constitución de Sociedad -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Constitución de Sociedad"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="ConstitucionSociedad"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Poder General -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Poder General"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="PoderGeneral"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Certificado de Dominio -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Certificado de Dominio"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="CertificadoDominio"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Testamento -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Testamento"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="Testamento"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Donación -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Donación"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="Donacion"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Hipoteca -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Hipoteca"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="Hipoteca"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Cancelación de Hipoteca -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Cancelación de Hipoteca"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="CancelacionHipoteca"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Usufructo -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Usufructo"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="Usufructo"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <!-- Servidumbre -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Servidumbre"
+                                       Style="{StaticResource ConceptTextStyle}"/>
+                            <TextBox Grid.Column="1" Name="Servidumbre"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"/>
+                        </Grid>
+
+                        <Separator Margin="0,16,0,12"/>
+
+                        <!-- Otra Gestión -->
+                        <TextBlock Text="OTRA GESTIÓN" FontWeight="SemiBold" FontSize="12"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,10"/>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Name="CustomTramiteTextBox"
+                                     materialDesign:HintAssist.Hint="Nombre del trámite personalizado"
+                                     materialDesign:HintAssist.IsFloating="True"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Margin="5"
+                                     TextChanged="CustomTramiteTextBox_TextChanged"/>
+                            <TextBox Grid.Column="1" Name="CustomTramiteImporte"
+                                     materialDesign:HintAssist.Hint="$"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     TextChanged="CertificadoChanged"
+                                     IsEnabled="False"/>
+                        </Grid>
+
+                        <Separator Margin="0,16,0,12"/>
+
+                        <!-- Subtotal 2 -->
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="SUBTOTAL SECCIÓN 2"
+                                       FontWeight="Bold" FontSize="13"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center" Margin="5,0"/>
+                            <TextBox Grid.Column="1" Name="Subtotal2"
+                                     Style="{StaticResource TotalTextBoxStyle}"
+                                     materialDesign:HintAssist.Hint="Total $"
+                                     Foreground="{StaticResource PrimaryBlueBrush}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Footer Totales y Acciones -->
+        <Border Grid.Row="3" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0"
+                Margin="0,8,0,0" Padding="24,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Subtotal Impuestos -->
+                <Border Grid.Column="0" Background="{StaticResource AppBgBrush}"
+                        BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1"
+                        CornerRadius="8" Padding="16" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="SUBTOTAL IMPUESTOS Y HONORARIOS"
+                                   FontSize="10" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,6"/>
+                        <TextBox Name="SubtotalImpuestosDisplay"
+                                 Style="{StaticResource TotalTextBoxStyle}"
+                                 materialDesign:HintAssist.Hint="Subtotal 1"
+                                 FontSize="16" Width="Auto" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Subtotal Certificados -->
+                <Border Grid.Column="1" Background="{StaticResource AppBgBrush}"
+                        BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1"
+                        CornerRadius="8" Padding="16" Margin="8,0">
+                    <StackPanel>
+                        <TextBlock Text="SUBTOTAL CERTIFICADOS Y GESTIONES"
+                                   FontSize="10" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,6"/>
+                        <TextBox Name="SubtotalCertificadosDisplay"
+                                 Style="{StaticResource TotalTextBoxStyle}"
+                                 materialDesign:HintAssist.Hint="Subtotal 2"
+                                 FontSize="16" Width="Auto" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total General -->
+                <Border Grid.Column="2" Background="{StaticResource PrimaryBlueLightBrush}"
+                        BorderBrush="{StaticResource PrimaryBlueBrush}" BorderThickness="1"
+                        CornerRadius="8" Padding="16" Margin="8,0,16,0">
+                    <StackPanel>
+                        <TextBlock Text="TOTAL GENERAL"
+                                   FontSize="10" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,0,0,6"/>
+                        <TextBox Name="TotalGeneralDisplay"
+                                 Style="{StaticResource TotalTextBoxStyle}"
+                                 materialDesign:HintAssist.Hint="Total Final"
+                                 FontSize="18" FontWeight="Bold"
+                                 Foreground="{StaticResource PrimaryBlueBrush}"
+                                 Width="Auto" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Botones -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource SecondaryButton}" Margin="0,0,10,0"
+                            Padding="16,10" Click="LimpiarButton_Click" ToolTip="Limpiar todos los campos">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Limpiar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource PrimaryButton}" Padding="20,10"
+                            Click="GenerarFacturaButton_Click" ToolTip="Generar factura y registrar cobro">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8EB;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Generar Factura" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

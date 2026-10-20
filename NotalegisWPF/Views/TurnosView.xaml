@@ -1,0 +1,275 @@
+﻿<Window x:Class="Notalegis.Views.TurnosView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Notalegis — Gestión de Turnos"
+        Icon="/Resources/logo.png"
+        MinHeight="700" MinWidth="1024"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        UseLayoutRounding="True"
+        WindowState="Maximized">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Gestión de Turnos" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button Content="Cerrar" Style="{StaticResource SecondaryButton}"
+                        Padding="14,7" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="btnCerrar_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Contenido principal: sin ScrollViewer de página completa, para que la
+             grilla de turnos tenga su propio scroll interno y los botones de abajo
+             queden siempre visibles sin depender de la cantidad de datos. -->
+        <Grid Grid.Row="1" Margin="24,20,24,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ===== Panel izquierdo ===== -->
+            <ScrollViewer Grid.Column="0" Margin="0,0,12,0"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Formulario de turno -->
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Nuevo Turno" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                            <ComboBox x:Name="cmbCliente" Margin="0,4,0,10"
+                                      materialDesign:HintAssist.Hint="Seleccionar Cliente"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      IsEditable="True"/>
+
+                            <DatePicker x:Name="dpFecha" Margin="0,4,0,10"
+                                        materialDesign:HintAssist.Hint="Fecha del Turno"
+                                        materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+
+                            <materialDesign:TimePicker x:Name="tpHora" Margin="0,4,0,10"
+                                                       materialDesign:HintAssist.Hint="Hora del Turno"
+                                                       Style="{StaticResource MaterialDesignOutlinedTimePicker}"/>
+
+                            <ComboBox x:Name="cmbTramite" Margin="0,4,0,10"
+                                      materialDesign:HintAssist.Hint="Tipo de Trámite"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      IsEditable="True"/>
+
+                            <ComboBox x:Name="cmbEstado" Margin="0,4,0,10" IsEnabled="False"
+                                      materialDesign:HintAssist.Hint="Estado del Turno (siempre Pendiente al agendar)"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"/>
+
+                            <TextBox x:Name="txtObservaciones" Margin="0,4,0,16"
+                                     materialDesign:HintAssist.Hint="Observaciones (Opcional)"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     AcceptsReturn="True" TextWrapping="Wrap" Height="60"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="btnLimpiar" Content="Limpiar"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Padding="14,8" Margin="0,0,10,0"
+                                        Click="btnLimpiar_Click"/>
+                                <Button x:Name="btnGuardar" Content="Guardar turno"
+                                        Style="{StaticResource PrimaryButton}"
+                                        Padding="14,8" Click="btnGuardar_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Calendario -->
+                    <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Calendario de Turnos" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                          VerticalScrollBarVisibility="Auto" MaxHeight="320">
+                                <Calendar x:Name="calendarTurnos"
+                                          HorizontalAlignment="Center"
+                                          Style="{StaticResource ModernCalendarStyle}"
+                                          SelectionMode="None"
+                                          IsTodayHighlighted="True"/>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+
+            <!-- ===== Panel derecho ===== -->
+            <Grid Grid.Column="1" Margin="12,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Filtros -->
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" x:Name="txtBuscar" Margin="0,0,8,0"
+                                     materialDesign:HintAssist.Hint="Buscar por cliente o trámite"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     TextChanged="txtBuscar_TextChanged"/>
+
+                            <ComboBox Grid.Column="1" x:Name="cmbFiltroEstado" Margin="8,0"
+                                      materialDesign:HintAssist.Hint="Filtrar por Estado"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      SelectionChanged="cmbFiltroEstado_SelectionChanged"/>
+
+                            <Button Grid.Column="2" Content="Buscar"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Padding="16,8" Margin="8,0,0,0"
+                                    Click="btnBuscar_Click"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- DataGrid -->
+                    <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="0" Margin="0,0,0,12">
+                        <Grid>
+                            <DataGrid x:Name="dgTurnos"
+                                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                                      SelectionMode="Single" SelectionUnit="FullRow"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      EnableRowVirtualization="True"
+                                      Style="{StaticResource ModernDataGrid}"
+                                      ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                                      RowStyle="{StaticResource ModernDataGridRow}"
+                                      CellStyle="{StaticResource ModernDataGridCell}"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      SelectionChanged="dgTurnos_SelectionChanged"
+                                      MinHeight="280">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Cliente" Binding="{Binding Cliente}" Width="180"/>
+                                    <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="90"/>
+                                    <DataGridTextColumn Header="Hora" Binding="{Binding Hora}" Width="70"/>
+                                    <DataGridTextColumn Header="Trámite" Binding="{Binding TipoTramite}" Width="140"/>
+                                    <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="120"/>
+                                    <DataGridTemplateColumn Header="Acciones" Width="Auto" MinWidth="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Editar" Click="btnEditar_Click">
+                                                        <TextBlock Text="&#xE70F;" Style="{StaticResource AccionIconoEditar}"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Eliminar" Click="btnEliminar_Click">
+                                                        <TextBlock Text="&#xE107;" Style="{StaticResource AccionIconoEliminar}"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Confirmar" Click="btnConfirmar_Click">
+                                                        <TextBlock Text="&#xE73E;" Style="{StaticResource AccionIconoConfirmar}"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Cancelar" Click="btnCancelarTurno_Click">
+                                                        <TextBlock Text="&#xE711;" Style="{StaticResource AccionIconoEliminar}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!-- Estado vacío -->
+                            <Border x:Name="borderSinTurnos" Visibility="Collapsed"
+                                    Background="White" CornerRadius="12">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Margin="0,40">
+                                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets"
+                                               FontSize="48" Foreground="{StaticResource BorderLightBrush}"
+                                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                                    <TextBlock Text="No hay turnos registrados"
+                                               HorizontalAlignment="Center" FontSize="15"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="Usá el formulario para agendar el primero."
+                                               HorizontalAlignment="Center" FontSize="12"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Acciones -->
+                    <Border Grid.Row="2" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                                       Text="Acciones sobre el turno seleccionado"
+                                       FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,6,0">
+                                <Button Content="Imprimir comprobante" Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch" Margin="0,0,0,8"
+                                        Click="btnEmitirTurno_Click">
+                                    <Button.ToolTip><ToolTip Content="Imprime el comprobante del turno seleccionado"/></Button.ToolTip>
+                                </Button>
+                                <Button Content="Recordatorio WhatsApp" Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch" Margin="0,0,0,8"
+                                        Click="btnAlertaTurno_Click">
+                                    <Button.ToolTip><ToolTip Content="Enviar recordatorio al cliente"/></Button.ToolTip>
+                                </Button>
+                                <Button Content="Confirmación WhatsApp" Style="{StaticResource PrimaryButton}"
+                                        HorizontalAlignment="Stretch"
+                                        Click="btnConfirmarWhatsApp_Click">
+                                    <Button.ToolTip><ToolTip Content="Notificar al cliente que su turno está confirmado"/></Button.ToolTip>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="6,0,0,0">
+                                <Button Content="Consultar turno" Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch" Margin="0,0,0,8"
+                                        Click="btnConsultarTurno_Click"/>
+                                <Button Content="Actualizar lista" Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch"
+                                        Click="btnActualizarLista_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+    </Grid>
+</Window>
+
+

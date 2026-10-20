@@ -1,0 +1,124 @@
+﻿<Window x:Class="Notalegis.Views.GestionTiposEscrituraWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Gestión de Tipos de Escritura"
+        Icon="/Resources/logo.png"
+        Height="620"
+        Width="850"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header blanco -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="TIPOS DE ESCRITURA" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido -->
+        <Grid Grid.Row="1" Margin="20,16,20,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Panel izquierdo: Formulario -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="Datos del Tipo" FontSize="15" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                    <TextBox x:Name="txtNombre" Margin="0,0,0,12"
+                             materialDesign:HintAssist.Hint="Nombre del Tipo *"
+                             materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                    <TextBox x:Name="txtDescripcion" Margin="0,0,0,12"
+                             materialDesign:HintAssist.Hint="Descripción"
+                             materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                             AcceptsReturn="True" TextWrapping="Wrap" Height="80"
+                             VerticalScrollBarVisibility="Auto"/>
+
+                    <CheckBox x:Name="chkActivo" Content="Activo" Margin="0,8,0,20" IsChecked="True"
+                              Style="{StaticResource MaterialDesignCheckBox}"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource SecondaryButton}" Padding="18,8"
+                                Content="Limpiar" Margin="0,0,8,0" Click="btnLimpiar_Click"/>
+                        <Button Style="{StaticResource PrimaryButton}" Padding="18,8"
+                                Content="Guardar" Click="btnGuardar_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Panel derecho: Lista -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="10,0,0,0" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Tipos Registrados" FontSize="15" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}" Margin="20,20,20,12"/>
+
+                    <DataGrid VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              EnableRowVirtualization="True"
+                              x:Name="dgTipos"
+                              Grid.Row="1"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              SelectionMode="Single"
+                              IsReadOnly="True"
+                              SelectionChanged="dgTipos_SelectionChanged"
+                              Style="{StaticResource ModernDataGrid}"
+                              ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                              RowStyle="{StaticResource ModernDataGridRow}"
+                              CellStyle="{StaticResource ModernDataGridCell}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
+                            <DataGridCheckBoxColumn Header="Activo" Binding="{Binding Activo}" Width="70"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Estado vacío -->
+                    <Border x:Name="borderSinTipos" Grid.Row="1" Visibility="Collapsed"
+                            Background="Transparent">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets" FontSize="52"
+                                       Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                            <TextBlock Text="No hay tipos de escritura registrados." HorizontalAlignment="Center"
+                                       FontSize="14" Foreground="#95A5A6" FontWeight="Medium"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="2" BorderBrush="{StaticResource BorderLightBrush}"
+                            BorderThickness="0,1,0,0" Padding="16,12">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource SecondaryButton}" Padding="18,8"
+                                    Content="Editar" Margin="0,0,8,0" Click="btnEditar_Click"/>
+                            <Button Style="{StaticResource DangerButton}" Padding="18,8"
+                                    Content="Eliminar" Click="btnEliminar_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

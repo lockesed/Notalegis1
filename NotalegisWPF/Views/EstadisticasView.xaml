@@ -1,0 +1,276 @@
+﻿<Window x:Class="Notalegis.Views.EstadisticasView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="Notalegis - Estadísticas"
+        Icon="/Resources/logo.png"
+        MinHeight="700" MinWidth="1100"
+        WindowStartupLocation="CenterOwner"
+        WindowState="Maximized"
+        UseLayoutRounding="True"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <Style x:Key="TablaRowHeaderStyle" TargetType="DataGridRowHeader">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Estadísticas" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtSubtitulo" Text="" FontSize="14"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               VerticalAlignment="Center" Margin="16,0,0,0"/>
+                </StackPanel>
+                <Button Content="Cerrar" Style="{StaticResource SecondaryButton}"
+                        Padding="14,7" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="btnCerrar_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Cuerpo principal -->
+        <Grid Grid.Row="1" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="290" MinWidth="250" MaxWidth="350"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Panel de control izquierdo -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="12,12,6,12">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0">
+
+                        <!-- Sección: Período -->
+                        <TextBlock Text="PERÍODO" FontSize="11" FontWeight="Bold"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8"/>
+
+                        <StackPanel Margin="0,0,0,4">
+                            <RadioButton x:Name="rbHoy" Content="Hoy" GroupName="Periodo"
+                                         Checked="Periodo_Changed" Margin="0,2"/>
+                            <RadioButton x:Name="rbEstaSemana" Content="Esta semana" GroupName="Periodo"
+                                         Checked="Periodo_Changed" Margin="0,2"/>
+                            <RadioButton x:Name="rbEsteMes" Content="Este mes" GroupName="Periodo"
+                                         IsChecked="False" Checked="Periodo_Changed" Margin="0,2"/>
+                            <RadioButton x:Name="rbEsteAnio" Content="Este año" GroupName="Periodo"
+                                         IsChecked="True" Checked="Periodo_Changed" Margin="0,2"/>
+                            <RadioButton x:Name="rbPersonalizado" Content="Personalizado" GroupName="Periodo"
+                                         Checked="Periodo_Changed" Margin="0,2"/>
+                        </StackPanel>
+
+                        <Grid x:Name="panelFechasPersonalizadas" Visibility="Collapsed" Margin="0,4,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <DatePicker x:Name="dpDesde" Grid.Row="0"
+                                        materialDesign:HintAssist.Hint="Desde"
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                        Margin="0,0,0,4"
+                                        SelectedDateChanged="FechaPersonalizada_Changed"/>
+                            <DatePicker x:Name="dpHasta" Grid.Row="1"
+                                        materialDesign:HintAssist.Hint="Hasta"
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                        SelectedDateChanged="FechaPersonalizada_Changed"/>
+                        </Grid>
+
+                        <Separator Margin="0,12,0,12" Background="{StaticResource BorderLightBrush}"/>
+
+                        <!-- Sección: Métrica -->
+                        <TextBlock Text="MÉTRICA A ANALIZAR" FontSize="11" FontWeight="Bold"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8"/>
+
+                        <ComboBox x:Name="cmbMetrica"
+                                  materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                  materialDesign:HintAssist.Hint="Seleccionar métrica"
+                                  SelectionChanged="cmbMetrica_SelectionChanged"
+                                  Margin="0,0,0,0"/>
+
+                        <Separator Margin="0,12,0,12" Background="{StaticResource BorderLightBrush}"/>
+
+                        <!-- Sección: Tipo de gráfico -->
+                        <TextBlock Text="TIPO DE GRÁFICO" FontSize="11" FontWeight="Bold"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8"/>
+
+                        <UniformGrid Columns="3" Margin="0,0,0,4">
+                            <RadioButton x:Name="rbBarras" Content="Barras" GroupName="Grafico"
+                                         IsChecked="True" Checked="TipoGrafico_Changed" Margin="0,2,4,2"/>
+                            <RadioButton x:Name="rbTorta" Content="Torta" GroupName="Grafico"
+                                         Checked="TipoGrafico_Changed" Margin="4,2,4,2"/>
+                            <RadioButton x:Name="rbSoloTabla" Content="Solo tabla" GroupName="Grafico"
+                                         Checked="TipoGrafico_Changed" Margin="4,2,0,2"/>
+                        </UniformGrid>
+
+                        <Separator Margin="0,12,0,12" Background="{StaticResource BorderLightBrush}"/>
+
+                        <!-- Sección: Exportar -->
+                        <TextBlock Text="EXPORTAR" FontSize="11" FontWeight="Bold"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8"/>
+
+                        <CheckBox x:Name="chkIncluirGrafico" Content="Incluir gráfico"
+                                  IsChecked="True" Margin="0,2"
+                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                        <CheckBox x:Name="chkIncluirTabla" Content="Incluir tabla de datos"
+                                  IsChecked="True" Margin="0,2"
+                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+
+                        <Button x:Name="btnExportarPdf" Style="{StaticResource PrimaryButton}"
+                                Margin="0,8,0,4" Click="btnExportarPdf_Click"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,6,0"/>
+                                <TextBlock Text="Exportar PDF"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="btnExportarExcel" Style="{StaticResource PrimaryButton}"
+                                Margin="0,0,0,4" Click="btnExportarExcel_Click"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE9F9;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,6,0"/>
+                                <TextBlock Text="Exportar Excel"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="btnExportarCsv" Style="{StaticResource SecondaryButton}"
+                                Margin="0,0,0,0" Click="btnExportarCsv_Click"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,6,0"/>
+                                <TextBlock Text="Exportar CSV"/>
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Panel derecho: KPIs + Gráfico + Tabla -->
+            <Grid Grid.Column="1" Margin="6,12,12,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" MinHeight="0"/>
+                </Grid.RowDefinitions>
+
+                <!-- KPI Cards -->
+                <ItemsControl x:Name="kpiPanel" Grid.Row="0" Margin="0,0,0,8">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CardBorder}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Valor}" FontSize="26" FontWeight="Bold"
+                                               Foreground="{Binding Color}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Etiqueta}" FontSize="11"
+                                               Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Área gráfico + tabla -->
+                <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Título del gráfico -->
+                        <TextBlock x:Name="txtTituloGrafico" Grid.Row="0"
+                                   Text="Seleccione una métrica para ver el gráfico"
+                                   FontSize="15" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="20,16,20,8"/>
+
+                        <!-- Contenedor gráfico/tabla -->
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="rowGrafico" Height="*"/>
+                                <RowDefinition x:Name="rowTabla" Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- WpfPlot (ScottPlot) -->
+                            <ScottPlot:WpfPlot x:Name="graficoPrincipal" Grid.Row="0"
+                                               MinHeight="250" Margin="8,0,8,8"
+                                               Visibility="Visible"/>
+
+                            <!-- Mensaje cuando no hay datos -->
+                            <TextBlock x:Name="txtSinDatos" Grid.Row="0"
+                                       Text="No hay datos para el período seleccionado."
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Foreground="{StaticResource TextMutedBrush}"
+                                       FontSize="14" Visibility="Collapsed"/>
+
+                            <!-- DataGrid de datos -->
+                            <Border x:Name="cardTabla" Grid.Row="1"
+                                    Margin="8,0,8,8" MaxHeight="220"
+                                    Background="{StaticResource AppBgBrush}"
+                                    CornerRadius="8">
+                                <DataGrid x:Name="dgDatos"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserSortColumns="True"
+                                          HeadersVisibility="All"
+                                          RowHeaderWidth="34"
+                                          RowHeaderStyle="{StaticResource TablaRowHeaderStyle}"
+                                          LoadingRow="dgDatos_LoadingRow"
+                                          GridLinesVisibility="Horizontal"
+                                          VirtualizingPanel.IsVirtualizing="True"
+                                          VirtualizingPanel.VirtualizationMode="Recycling"
+                                          EnableRowVirtualization="True"
+                                          Style="{StaticResource ModernDataGrid}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Categoría" Binding="{Binding Etiqueta}"
+                                                            Width="*" MinWidth="120"
+                                                            HeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                                                            CellStyle="{StaticResource ModernDataGridCell}"/>
+                                        <DataGridTextColumn Header="Valor" Binding="{Binding ValorFormateado}"
+                                                            Width="120" MinWidth="80"
+                                                            HeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                                                            CellStyle="{StaticResource ModernDataGridCell}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

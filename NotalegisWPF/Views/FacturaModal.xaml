@@ -1,0 +1,231 @@
+﻿<Window x:Class="NotalegisWPF.Views.FacturaModal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Datos del Presupuesto/Factura"
+        Icon="/Resources/logo.png"
+        Height="750"
+        Width="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="MinHeight" Value="45"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,8"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header azul -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="White" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Datos del Presupuesto" FontSize="17" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="Complete todos los datos para generar el documento"
+                                   FontSize="11" Foreground="#CCE3FF"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Form Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="16,16,16,0">
+
+                <!-- Datos del Escribano -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="DATOS DEL ESCRIBANO" FontWeight="Bold" FontSize="13"
+                                   Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,0,0,10"/>
+
+                        <TextBox Name="EscribanoNombre"
+                                 materialDesign:HintAssist.Hint="Nombre del Escribano"
+                                 Style="{StaticResource InputTextBoxStyle}"/>
+
+                        <TextBox Name="EscribanoDireccion"
+                                 materialDesign:HintAssist.Hint="Dirección"
+                                 Style="{StaticResource InputTextBoxStyle}"/>
+
+                        <TextBox Name="EscribanoLocalidad"
+                                 materialDesign:HintAssist.Hint="Localidad"
+                                 Style="{StaticResource InputTextBoxStyle}"/>
+
+                        <TextBox Name="EscribanoMatricula"
+                                 materialDesign:HintAssist.Hint="Matrícula"
+                                 Style="{StaticResource InputTextBoxStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Datos del Cliente y Operación -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="DATOS DEL CLIENTE Y OPERACIÓN" FontWeight="Bold" FontSize="13"
+                                   Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,0,0,10"/>
+
+                        <TextBox Name="ClienteNombre"
+                                 materialDesign:HintAssist.Hint="Nombre del Cliente"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 IsReadOnly="True"/>
+
+                        <TextBox Name="TipoOperacion"
+                                 materialDesign:HintAssist.Hint="Tipo de Operación (ej: Compra, Venta, Hipoteca)"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 Text="Compra"/>
+
+                        <DatePicker Name="FechaFactura"
+                                    materialDesign:HintAssist.Hint="Fecha del Presupuesto"
+                                    materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"
+                                    Margin="5" MinHeight="45" Padding="10,8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Montos Principales -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="MONTOS PRINCIPALES" FontWeight="Bold" FontSize="13"
+                                   Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,0,0,10"/>
+
+                        <TextBox Name="ImporteOperacion"
+                                 materialDesign:HintAssist.Hint="Importe de la Operación"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 Text="90000,00"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Conceptos Gravados -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="CONCEPTOS GRAVADOS POR EL I.V.A." FontWeight="Bold" FontSize="13"
+                                   Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,0,0,10"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Concepto" FontWeight="Bold"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="5"/>
+                            <TextBlock Grid.Column="1" Text="Precio Unit." FontWeight="Bold"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="5"/>
+                            <TextBlock Grid.Column="2" Text="Cantidad" FontWeight="Bold"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="5"/>
+                        </Grid>
+
+                        <Separator Margin="0,5"/>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" Name="ConceptoFojaElaborada"
+                                     materialDesign:HintAssist.Hint="Foja Elaborada"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="Foja Elaborada" Margin="5,5,10,5"/>
+                            <TextBox Grid.Column="1" Name="PrecioFojaElaborada"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="12,10" Margin="5"/>
+                            <TextBox Grid.Column="2" Name="CantidadFojaElaborada"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="20" Margin="10,5,5,5"/>
+                        </Grid>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" Name="ConceptoAporteNotarial"
+                                     materialDesign:HintAssist.Hint="Aporte Notarial"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="Aporte Notarial" Margin="5,5,10,5"/>
+                            <TextBox Grid.Column="1" Name="PrecioAporteNotarial"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="54,45" Margin="5"/>
+                            <TextBox Grid.Column="2" Name="CantidadAporteNotarial"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="1" Margin="10,5,5,5"/>
+                        </Grid>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" Name="ConceptoHonorarios"
+                                     materialDesign:HintAssist.Hint="Honorarios"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="Honorarios Compraventa" Margin="5,5,10,5"/>
+                            <TextBox Grid.Column="1" Name="PrecioHonorarios"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="2178,00" Margin="5"/>
+                            <TextBox Grid.Column="2" Name="CantidadHonorarios"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Text="1" Margin="10,5,5,5"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Observaciones -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="OBSERVACIONES" FontWeight="Bold" FontSize="13"
+                                   Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,0,0,10"/>
+
+                        <TextBox Name="ObservacionesFactura"
+                                 materialDesign:HintAssist.Hint="Observaciones adicionales"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Height="60"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Text="COMPROBANTE SIN VALOR COMERCIAL."
+                                 Margin="5"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Style="{StaticResource DialogFooterBorder}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource SecondaryButton}"
+                        Content="Cancelar"
+                        Padding="20,8" Margin="0,0,10,0"
+                        Click="CancelarButton_Click"/>
+                <Button Style="{StaticResource PrimaryButton}"
+                        Padding="20,8"
+                        Click="GenerarPresupuestoButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Generar Presupuesto" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

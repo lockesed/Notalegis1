@@ -1,0 +1,96 @@
+<Window x:Class="Notalegis.Views.PrevisualizadorDocumentoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Vista Previa del Documento"
+        Icon="/Resources/logo.png"
+        Width="950" Height="750"
+        MinWidth="600" MinHeight="450"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Barra superior -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="txtTituloArchivo" VerticalAlignment="Center"
+                               FontSize="14" FontWeight="Medium" Foreground="White"
+                               TextTrimming="CharacterEllipsis" MaxWidth="550"/>
+                </StackPanel>
+
+                <!-- Navegación PDF (solo visible para PDFs) -->
+                <StackPanel x:Name="panelNavPaginas" Grid.Column="1" Orientation="Horizontal"
+                            Visibility="Collapsed" VerticalAlignment="Center">
+                    <Button x:Name="btnPaginaAnterior"
+                            Style="{StaticResource IconButton}"
+                            Click="btnPaginaAnterior_Click"
+                            Padding="4" MinWidth="0" IsEnabled="False">
+                        <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="White"/>
+                    </Button>
+                    <TextBlock x:Name="txtPagina" VerticalAlignment="Center"
+                               Foreground="White" Margin="6,0" FontSize="13"/>
+                    <Button x:Name="btnPaginaSiguiente"
+                            Style="{StaticResource IconButton}"
+                            Click="btnPaginaSiguiente_Click"
+                            Padding="4" MinWidth="0" IsEnabled="False">
+                        <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="White"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Área de contenido -->
+        <Grid Grid.Row="1">
+
+            <!-- PDF: imagen página a página -->
+            <ScrollViewer x:Name="scrollPdf" Visibility="Collapsed"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          Background="#EBEBEB">
+                <Image x:Name="imgPdf" Margin="20" Stretch="Uniform"
+                       MaxWidth="1100" HorizontalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+            </ScrollViewer>
+
+            <!-- TXT: texto plano en fuente monoespaciada -->
+            <ScrollViewer x:Name="scrollTxt" Visibility="Collapsed" Padding="4">
+                <TextBox x:Name="txtContenido" IsReadOnly="True" TextWrapping="Wrap"
+                         AcceptsReturn="True" BorderThickness="0"
+                         Background="Transparent" FontFamily="Consolas"
+                         FontSize="13" Padding="16"/>
+            </ScrollViewer>
+
+            <!-- DOCX: FlowDocument con formato básico -->
+            <FlowDocumentScrollViewer x:Name="flowDocViewer" Visibility="Collapsed"
+                                      VerticalScrollBarVisibility="Auto"
+                                      Background="{StaticResource CardBgBrush}"/>
+
+            <!-- Indicador de carga -->
+            <Border x:Name="borderCargando" Visibility="Visible"
+                    Background="{StaticResource AppBgBrush}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="220" Margin="0,0,0,14"
+                                 Style="{StaticResource MaterialDesignLinearProgressBar}"
+                                 Foreground="{StaticResource PrimaryBlueBrush}"/>
+                    <TextBlock Text="Cargando documento..." HorizontalAlignment="Center"
+                               Foreground="{StaticResource TextMutedBrush}" FontSize="13"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

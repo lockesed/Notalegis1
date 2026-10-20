@@ -1,0 +1,204 @@
+<Window x:Class="Notalegis.Views.DetallesPresupuestoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Detalles del Presupuesto - Notalegis"
+        Icon="/Resources/logo.png"
+        Height="600" Width="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header azul modal -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="White" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Detalles del Presupuesto"
+                                   FontSize="17" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Name="ExpedienteHeaderText"
+                                   FontSize="12" Foreground="White" Opacity="0.85"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="16,16,16,0">
+
+                <!-- Información del cliente -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="INFORMACIÓN DEL CLIENTE"
+                                   FontWeight="SemiBold" FontSize="12"
+                                   Foreground="{StaticResource PrimaryBlueBrush}"
+                                   Margin="0,0,0,12"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Cliente:"
+                                       FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,2,12,6"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Name="ClienteText"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2,0,6"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Expediente:"
+                                       FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,2,12,6"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Name="ExpedienteText"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2,0,6"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Tipo Trámite:"
+                                       FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,2,12,2"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Name="TipoTramiteText"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Resumen financiero -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="RESUMEN FINANCIERO"
+                                   FontWeight="SemiBold" FontSize="12"
+                                   Foreground="{StaticResource PrimaryBlueBrush}"
+                                   Margin="0,0,0,12"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="Total Presupuesto:"
+                                           FontWeight="SemiBold" FontSize="12"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Name="TotalPresupuestoText" FontSize="16" FontWeight="Bold"
+                                           Foreground="{StaticResource PrimaryBlueBrush}" Margin="0,2,0,10"/>
+
+                                <TextBlock Text="Subtotal Impuestos:"
+                                           FontWeight="SemiBold" FontSize="12"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Name="SubtotalImpuestosText" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2,0,10"/>
+
+                                <TextBlock Text="Subtotal Certificados:"
+                                           FontWeight="SemiBold" FontSize="12"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Name="SubtotalCertificadosText" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2,0,4"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="Monto Abonado:"
+                                           FontWeight="SemiBold" FontSize="12"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Name="MontoAbonadoText" FontSize="16" FontWeight="Bold"
+                                           Foreground="{StaticResource SuccessBrush}" Margin="0,2,0,10"/>
+
+                                <TextBlock Text="Saldo Pendiente:"
+                                           FontWeight="SemiBold" FontSize="12"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Name="SaldoPendienteText" FontSize="16" FontWeight="Bold"
+                                           Foreground="{StaticResource DangerBrush}" Margin="0,2,0,10"/>
+
+                                <TextBlock Text="Estado:"
+                                           FontWeight="SemiBold" FontSize="12"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <Border Name="EstadoBorder" CornerRadius="10" Margin="0,4,0,4"
+                                        Width="80" HorizontalAlignment="Left" Padding="8,4">
+                                    <TextBlock Name="EstadoText" FontSize="12" FontWeight="Bold"
+                                               HorizontalAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Detalles de pago -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="DETALLES DE PAGO"
+                                   FontWeight="SemiBold" FontSize="12"
+                                   Foreground="{StaticResource PrimaryBlueBrush}"
+                                   Margin="0,0,0,12"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Método de Pago:"
+                                       FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,2,12,6"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Name="MetodoPagoText"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2,0,6"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Fecha Presupuesto:"
+                                       FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,2,12,6"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Name="FechaPresupuestoText"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2,0,6"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Última Actualización:"
+                                       FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,2,12,2"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Name="UltimaActualizacionText"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,2"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Observaciones -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,4"
+                        Background="{StaticResource CardBgBrush}">
+                    <StackPanel>
+                        <TextBlock Text="OBSERVACIONES"
+                                   FontWeight="SemiBold" FontSize="12"
+                                   Foreground="{StaticResource PrimaryBlueBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Name="ObservacionesText"
+                                   TextWrapping="Wrap"
+                                   FontSize="13"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   MinHeight="40"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer modal -->
+        <Border Grid.Row="2" Style="{StaticResource DialogFooterBorder}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cerrar" Style="{StaticResource PrimaryButton}"
+                        Padding="20,8" Click="CerrarButton_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

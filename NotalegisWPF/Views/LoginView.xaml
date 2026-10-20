@@ -1,0 +1,184 @@
+<Window x:Class="Notalegis.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Notalegis — Acceso al Sistema"
+        Icon="/Resources/logo.png"
+        Height="580" Width="940"
+        MinHeight="520" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        FontFamily="Segoe UI"
+        UseLayoutRounding="True"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== PANEL IZQUIERDO — Branding ===== -->
+        <Grid Grid.Column="0" Background="{StaticResource SidebarBgBrush}">
+
+            <StackPanel VerticalAlignment="Center" Margin="48,0">
+
+                <!-- Logo -->
+                <Border Width="56" Height="56" CornerRadius="14"
+                        Background="#C79A3A" HorizontalAlignment="Left">
+                    <TextBlock Text="N" FontSize="28" FontWeight="Bold"
+                               Foreground="#1B2A44"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Nombre y subtítulo -->
+                <TextBlock Text="Notalegis"
+                           FontSize="28" FontWeight="Bold"
+                           Foreground="White"
+                           Margin="0,20,0,6"/>
+                <TextBlock Text="Sistema de Gestión para Escribanías Argentinas"
+                           FontSize="13"
+                           Foreground="{StaticResource SidebarTextMutedBrush}"
+                           TextWrapping="Wrap"
+                           LineHeight="20"/>
+
+                <!-- Separador -->
+                <Border Height="1" Background="#253856" Margin="0,32,0,28"/>
+
+                <!-- Features -->
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Width="22" Height="22" CornerRadius="11"
+                                Background="{StaticResource PrimaryBlueBrush}"
+                                Margin="0,0,12,0" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="11" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Gestión de trámites y escrituras"
+                                   Foreground="White" Opacity="0.85"
+                                   VerticalAlignment="Center" FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Width="22" Height="22" CornerRadius="11"
+                                Background="{StaticResource PrimaryBlueBrush}"
+                                Margin="0,0,12,0" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="11" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Control de cobros y pagos"
+                                   Foreground="White" Opacity="0.85"
+                                   VerticalAlignment="Center" FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Width="22" Height="22" CornerRadius="11"
+                                Background="{StaticResource PrimaryBlueBrush}"
+                                Margin="0,0,12,0" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="11" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Turnos, agenda y recordatorios"
+                                   Foreground="White" Opacity="0.85"
+                                   VerticalAlignment="Center" FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="22" Height="22" CornerRadius="11"
+                                Background="{StaticResource PrimaryBlueBrush}"
+                                Margin="0,0,12,0" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="11" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Estadísticas e informes"
+                                   Foreground="White" Opacity="0.85"
+                                   VerticalAlignment="Center" FontSize="13"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Versión al pie -->
+            <TextBlock Text="v1.0 — 2026"
+                       VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                       Margin="0,0,0,20"
+                       Foreground="{StaticResource SidebarTextMutedBrush}"
+                       FontSize="11"/>
+        </Grid>
+
+        <!-- ===== PANEL DERECHO — Formulario ===== -->
+        <Grid Grid.Column="1" Background="{StaticResource AppBgBrush}">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Width="380"
+                    Background="White"
+                    CornerRadius="16"
+                    Padding="40,36">
+                <Border.Effect>
+                    <DropShadowEffect Color="#1E2D3D" BlurRadius="32"
+                                      ShadowDepth="4" Opacity="0.08" Direction="270"/>
+                </Border.Effect>
+
+                <StackPanel>
+                    <!-- Encabezado -->
+                    <TextBlock Text="Bienvenido"
+                               FontSize="24" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock Text="Ingresá tus credenciales para acceder al sistema."
+                               FontSize="13"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,32"/>
+
+                    <!-- Campo usuario -->
+                    <TextBlock Text="Usuario" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtUsuario"
+                             Style="{StaticResource ModernTextBox}"
+                             Height="44"
+                             Margin="0,0,0,16"
+                             KeyDown="Input_KeyDown"/>
+
+                    <!-- Campo contraseña -->
+                    <TextBlock Text="Contraseña" Style="{StaticResource FormLabel}"/>
+                    <PasswordBox x:Name="txtPassword"
+                                 Style="{StaticResource ModernPasswordBox}"
+                                 Height="44"
+                                 Margin="0,0,0,6"
+                                 KeyDown="Input_KeyDown"/>
+
+                    <!-- Mensaje de error -->
+                    <Border x:Name="pnlError"
+                            Background="{StaticResource DangerLightBrush}"
+                            CornerRadius="8" Padding="12,10"
+                            Margin="0,10,0,0"
+                            Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE783;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="14" Foreground="{StaticResource DangerBrush}"
+                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBlock x:Name="txtError"
+                                       Foreground="{StaticResource DangerTextBrush}"
+                                       FontSize="12" FontWeight="Medium"
+                                       TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Botón ingresar -->
+                    <Button x:Name="btnIngresar"
+                            Content="Ingresar"
+                            Style="{StaticResource PrimaryButton}"
+                            Height="46"
+                            FontSize="14"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,20,0,0"
+                            Click="btnIngresar_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,99 @@
+﻿<Window x:Class="NotalegisWPF.Views.ClientesInactivosView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Clientes Inactivos"
+        Icon="/Resources/logo.png"
+        Height="560" Width="820"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Clientes Inactivos" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido -->
+        <Grid Grid.Row="1" Margin="24,20,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Filtro -->
+            <Border Grid.Row="0" Style="{StaticResource FilterBarBorder}" Margin="0,0,0,12">
+                <TextBox x:Name="txtBuscar" Width="300"
+                         materialDesign:HintAssist.Hint="Buscar por nombre o DNI"
+                         materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                         TextChanged="txtBuscar_TextChanged"/>
+            </Border>
+
+            <!-- DataGrid -->
+            <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="0">
+                <Grid>
+                    <DataGrid x:Name="dgvClientes"
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              SelectionMode="Single" SelectionUnit="FullRow"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              EnableRowVirtualization="True"
+                              Style="{StaticResource ModernDataGrid}"
+                              ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                              RowStyle="{StaticResource ModernDataGridRow}"
+                              CellStyle="{StaticResource ModernDataGridCell}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
+                            <DataGridTextColumn Header="Apellido" Binding="{Binding Apellido}" Width="*"/>
+                            <DataGridTextColumn Header="DNI" Binding="{Binding DNI}" Width="100"/>
+                            <DataGridTemplateColumn Header="Acciones" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource IconButton}"
+                                                ToolTip="Reactivar Cliente" Click="btnReactivar_Click">
+                                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="14" Foreground="{StaticResource SuccessBrush}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border x:Name="borderSinInactivos" Visibility="Collapsed"
+                            Background="White" CornerRadius="12">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40">
+                            <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="48" Foreground="{StaticResource BorderLightBrush}"
+                                       HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                            <TextBlock Text="No hay clientes inactivos"
+                                       HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

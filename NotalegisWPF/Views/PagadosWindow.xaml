@@ -1,0 +1,349 @@
+﻿<Window x:Class="Notalegis.Views.PagadosWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Gestión de Pagados - Notalegis"
+        Icon="/Resources/logo.png"
+        Height="900" Width="1600"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="StatusChipStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource IconButton}">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header fullscreen blanco -->
+        <Border Grid.Row="0" Background="White" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8EB;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Gestión de Pagados" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Control de Presupuestos y Abonos" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Style="{StaticResource SecondaryButton}" Padding="14,7" Margin="0,0,10,0"
+                            Click="ExportarButton_Click" ToolTip="Exportar datos a Excel">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Exportar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource SecondaryButton}" Padding="14,7"
+                            Click="ActualizarButton_Click" ToolTip="Actualizar datos">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Actualizar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Tarjetas de estadísticas -->
+        <Grid Grid.Row="1" Margin="20,16,20,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,8,0" Padding="16">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="{StaticResource PrimaryBlueBrush}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Total presupuestos" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center" Margin="0,6,0,2"/>
+                    <TextBlock Name="TotalPresupuestosText" Text="0" FontSize="18" FontWeight="Bold"
+                               TextAlignment="Center" Foreground="{StaticResource PrimaryBlueBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="8,0,8,0" Padding="16">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Pagados completos" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center" Margin="0,6,0,2"/>
+                    <TextBlock Name="PagadosCompletosText" Text="0" FontSize="18" FontWeight="Bold"
+                               TextAlignment="Center" Foreground="{StaticResource SuccessBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="8,0,8,0" Padding="16">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE916;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="{StaticResource WarningBrush}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Pagos parciales" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center" Margin="0,6,0,2"/>
+                    <TextBlock Name="PagosParcialesText" Text="0" FontSize="18" FontWeight="Bold"
+                               TextAlignment="Center" Foreground="{StaticResource WarningBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3" Style="{StaticResource CardBorder}" Margin="8,0,8,0" Padding="16">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="{StaticResource DangerBrush}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Pendientes" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center" Margin="0,6,0,2"/>
+                    <TextBlock Name="PendientesText" Text="0" FontSize="18" FontWeight="Bold"
+                               TextAlignment="Center" Foreground="{StaticResource DangerBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="4" Style="{StaticResource CardBorder}" Margin="8,0,0,0" Padding="16">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8EB;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="{StaticResource PrimaryBlueBrush}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Ganancias totales" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center" Margin="0,6,0,2"/>
+                    <TextBlock Name="GananciasTotalesText" Text="$ 0,00" FontSize="16" FontWeight="Bold"
+                               TextAlignment="Center" Foreground="{StaticResource PrimaryBlueBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Barra de filtros -->
+        <Border Grid.Row="2" Style="{StaticResource FilterBarBorder}" Margin="20,12,20,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Cliente" FontWeight="SemiBold" FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                    <ComboBox Name="ClienteFilterComboBox"
+                              materialDesign:HintAssist.Hint="Todos los clientes"
+                              materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Estado de pago" FontWeight="SemiBold" FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                    <ComboBox Name="EstadoFilterComboBox"
+                              materialDesign:HintAssist.Hint="Todos los estados"
+                              materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}">
+                        <ComboBoxItem Content="Todos"/>
+                        <ComboBoxItem Content="Pendiente"/>
+                        <ComboBoxItem Content="Parcial"/>
+                        <ComboBoxItem Content="Pagado"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="Fecha desde" FontWeight="SemiBold" FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                    <DatePicker Name="FechaDesdeFilter"
+                                materialDesign:HintAssist.Hint="Fecha desde"
+                                materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="6">
+                    <TextBlock Text="Fecha hasta" FontWeight="SemiBold" FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                    <DatePicker Name="FechaHastaFilter"
+                                materialDesign:HintAssist.Hint="Fecha hasta"
+                                materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="8" VerticalAlignment="Bottom">
+                    <Button Style="{StaticResource PrimaryButton}" Padding="20,10" Click="FiltrarButton_Click"
+                            ToolTip="Aplicar filtros">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Filtrar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- DataGrid -->
+        <Border Grid.Row="3" Style="{StaticResource CardBorder}" Margin="20,12,20,0">
+            <Grid>
+                <DataGrid VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
+                          EnableRowVirtualization="True" Name="PagadosDataGrid"
+                          Style="{StaticResource ModernDataGrid}"
+                          MouseDoubleClick="PagadosDataGrid_MouseDoubleClick"
+                          SelectionChanged="PagadosDataGrid_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, StringFormat=dd/MM/yyyy}" Width="80">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Cliente" Binding="{Binding ClienteNombre}" Width="150">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Tipo Trámite" Binding="{Binding TipoTramite}" Width="120">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Total Presup." Binding="{Binding Total, StringFormat=C}" Width="100">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Abonado" Binding="{Binding MontoAbonado, StringFormat=C}" Width="100">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="Estado" Width="90">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border>
+                                        <Border.Style>
+                                            <Style TargetType="Border" BasedOn="{StaticResource StatusChipStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EstadoPago}" Value="Pagado">
+                                                        <Setter Property="Background" Value="{StaticResource SuccessLightBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding EstadoPago}" Value="Parcial">
+                                                        <Setter Property="Background" Value="{StaticResource WarningLightBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding EstadoPago}" Value="Pendiente">
+                                                        <Setter Property="Background" Value="{StaticResource DangerLightBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding EstadoPago}" FontSize="10" FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Última Actualización" Binding="{Binding UltimaActualizacion, StringFormat=dd/MM/yyyy}" Width="120">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="Acciones" Width="170">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ModernDataGridColumnHeader}"/>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Style="{StaticResource ActionButtonStyle}"
+                                                ToolTip="Registrar Pago"
+                                                Click="RegistrarPagoButton_Click"
+                                                Tag="{Binding}">
+                                            <TextBlock Text="&#xE8EB;" FontFamily="Segoe MDL2 Assets" FontSize="13"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButtonStyle}"
+                                                ToolTip="Ver Detalles"
+                                                Click="VerDetallesButton_Click"
+                                                Tag="{Binding}">
+                                            <TextBlock Text="&#xE8FF;" FontFamily="Segoe MDL2 Assets" FontSize="13"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButtonStyle}"
+                                                ToolTip="Historial de Pagos"
+                                                Click="HistorialPagosButton_Click"
+                                                Tag="{Binding}">
+                                            <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="13"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Empty State -->
+                <StackPanel Name="EmptyStatePanel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Visibility="Collapsed">
+                    <TextBlock Text="&#xE8EB;" FontFamily="Segoe MDL2 Assets" FontSize="52"
+                               Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" Opacity="0.4"/>
+                    <TextBlock Text="No se encontraron presupuestos"
+                               FontSize="15" Foreground="{StaticResource TextMutedBrush}"
+                               Margin="0,10,0,0" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Summary footer -->
+        <Border Grid.Row="4" Style="{StaticResource CardBorder}" Margin="20,12,20,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="10">
+                    <TextBlock Text="Total presupuestado" FontWeight="SemiBold" FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Name="TotalPresupuestadoText" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="10">
+                    <TextBlock Text="Total abonado" FontWeight="SemiBold" FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Name="TotalAbonadoText" FontSize="16" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="10">
+                    <TextBlock Text="Saldo pendiente" FontWeight="SemiBold" FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Name="SaldoPendienteText" FontSize="16" FontWeight="Bold" Foreground="{StaticResource DangerBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Margin="10">
+                    <TextBlock Text="% cobrado" FontWeight="SemiBold" FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Name="PorcentajeCobradoText" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryBlueBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

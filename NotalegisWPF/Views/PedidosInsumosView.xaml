@@ -1,0 +1,307 @@
+﻿<Window x:Class="Notalegis.Views.PedidosInsumosView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Notalegis — Gestión de Pedidos de Insumos"
+        Icon="/Resources/logo.png"
+        MinHeight="700" MinWidth="1024"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        WindowState="Maximized"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Gestión de Pedidos de Insumos" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button Content="Cerrar" Style="{StaticResource SecondaryButton}"
+                        Padding="14,7" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="btnCerrar_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Contenido: sin ScrollViewer de página completa, para que la grilla de
+             pedidos tenga su propio scroll interno y los botones de abajo queden
+             siempre visibles sin depender de la cantidad de datos. -->
+        <Grid Grid.Row="1" Margin="24,20,24,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Panel izquierdo -->
+                <ScrollViewer Grid.Column="0" Margin="0,0,12,0"
+                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Formulario de Pedido -->
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Nuevo Pedido de Insumos" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                            <DatePicker x:Name="dpFechaPedido" Margin="0,0,0,10"
+                                        materialDesign:HintAssist.Hint="Fecha del Pedido *"
+                                        materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+
+                            <TextBox x:Name="txtTipoInsumo" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Tipo de Insumo *"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     Text="Hojas Protocolares" IsReadOnly="True"/>
+
+                            <TextBox x:Name="txtCantidad" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Cantidad *"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtCantidad_PreviewTextInput"/>
+
+                            <TextBox x:Name="txtSolicitante" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Solicitante (Escribano) *"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <ComboBox x:Name="cmbEstado" Margin="0,0,0,10"
+                                      materialDesign:HintAssist.Hint="Estado *"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"/>
+
+                            <TextBox x:Name="txtEmailDestino" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Email Destino (Colegio)"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <TextBox x:Name="txtObservaciones" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Observaciones (Opcional)"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     AcceptsReturn="True" TextWrapping="Wrap" Height="60"/>
+
+                            <CheckBox x:Name="chkFirmado" Margin="0,0,0,16"
+                                      Content="Pedido Firmado"
+                                      Style="{StaticResource MaterialDesignCheckBox}"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Limpiar" Style="{StaticResource SecondaryButton}"
+                                        Padding="14,8" Margin="0,0,10,0" Click="btnLimpiar_Click"/>
+                                <Button Content="Guardar" Style="{StaticResource PrimaryButton}"
+                                        Padding="14,8" Click="btnGuardar_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Gestión de Stock -->
+                    <Border Grid.Row="1" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Gestión de Stock" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                            <TextBox x:Name="txtTipoInsumoStock" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Tipo de Insumo"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     Text="Hojas Protocolares" IsReadOnly="True"/>
+
+                            <TextBox x:Name="txtCantidadActual" Margin="0,0,0,10"
+                                     materialDesign:HintAssist.Hint="Cantidad Actual"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtCantidad_PreviewTextInput"/>
+
+                            <TextBox x:Name="txtStockMinimo" Margin="0,0,0,16"
+                                     materialDesign:HintAssist.Hint="Stock Mínimo (Alerta)"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtCantidad_PreviewTextInput"/>
+
+                            <Button Content="Actualizar Stock" Style="{StaticResource SecondaryButton}"
+                                    HorizontalAlignment="Stretch" Click="btnActualizarStock_Click"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Alertas de Stock -->
+                    <Border Grid.Row="2" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                           Foreground="{StaticResource WarningBrush}" VerticalAlignment="Center"/>
+                                <TextBlock Text="Alertas de Stock Bajo" FontSize="15" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"
+                                           Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                                <ItemsControl x:Name="lstAlertas">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{StaticResource WarningLightBrush}"
+                                                    BorderBrush="{StaticResource WarningBrush}"
+                                                    BorderThickness="1" CornerRadius="8"
+                                                    Padding="12" Margin="0,0,0,8">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding TipoInsumo}"
+                                                               FontWeight="SemiBold" FontSize="13"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                    <TextBlock FontSize="12" Margin="0,4,0,0"
+                                                               Foreground="{StaticResource TextSecondaryBrush}">
+                                                        <Run Text="Stock actual: "/>
+                                                        <Run Text="{Binding CantidadActual}" FontWeight="Bold"
+                                                             Foreground="{StaticResource DangerBrush}"/>
+                                                        <Run Text=" | Mínimo: "/>
+                                                        <Run Text="{Binding StockMinimo}"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                </ScrollViewer>
+
+                <!-- Panel derecho -->
+                <Grid Grid.Column="1" Margin="12,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Filtros -->
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" x:Name="txtBuscar" Margin="0,0,8,0"
+                                     materialDesign:HintAssist.Hint="Buscar por solicitante o tipo"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     TextChanged="txtBuscar_TextChanged"/>
+
+                            <ComboBox Grid.Column="1" x:Name="cmbFiltroEstado" Margin="8,0"
+                                      materialDesign:HintAssist.Hint="Filtrar por Estado"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      SelectionChanged="cmbFiltroEstado_SelectionChanged"/>
+
+                            <Button Grid.Column="2" Content="Actualizar"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Padding="14,8" Margin="8,0,0,0"
+                                    Click="btnActualizarLista_Click"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- DataGrid -->
+                    <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="0" Margin="0,0,0,12">
+                        <Grid>
+                            <DataGrid x:Name="dgPedidos"
+                                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                                      SelectionMode="Single" SelectionUnit="FullRow"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      EnableRowVirtualization="True"
+                                      Style="{StaticResource ModernDataGrid}"
+                                      ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                                      RowStyle="{StaticResource ModernDataGridRow}"
+                                      CellStyle="{StaticResource ModernDataGridCell}"
+                                      MinHeight="280">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                                    <DataGridTextColumn Header="Fecha" Binding="{Binding FechaPedido, StringFormat=dd/MM/yyyy}" Width="100"/>
+                                    <DataGridTextColumn Header="Tipo Insumo" Binding="{Binding TipoInsumo}" Width="150"/>
+                                    <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad}" Width="80"/>
+                                    <DataGridTextColumn Header="Solicitante" Binding="{Binding Solicitante}" Width="150"/>
+                                    <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
+                                    <DataGridCheckBoxColumn Header="Firmado" Binding="{Binding Firmado}" Width="80"/>
+                                    <DataGridTemplateColumn Header="Acciones" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Editar" Click="btnEditar_Click">
+                                                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets"
+                                                                   FontSize="14" Foreground="{StaticResource PrimaryBlueBrush}"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Eliminar" Click="btnEliminar_Click">
+                                                        <TextBlock Text="&#xE107;" FontFamily="Segoe MDL2 Assets"
+                                                                   FontSize="14" Foreground="{StaticResource DangerBrush}"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource IconButton}"
+                                                            ToolTip="Emitir" Click="btnEmitir_Click">
+                                                        <TextBlock Text="&#xE749;" FontFamily="Segoe MDL2 Assets"
+                                                                   FontSize="14" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Border x:Name="borderSinPedidos" Visibility="Collapsed"
+                                    Background="White" CornerRadius="12">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40">
+                                    <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets"
+                                               FontSize="48" Foreground="{StaticResource BorderLightBrush}"
+                                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                                    <TextBlock Text="No hay pedidos de insumos registrados"
+                                               HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="Usá el formulario para crear el primero."
+                                               HorizontalAlignment="Center" FontSize="12"
+                                               Foreground="{StaticResource TextMutedBrush}" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Acciones -->
+                    <Border Grid.Row="2" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                                <Button Content="Emitir listado mensual" Style="{StaticResource PrimaryButton}"
+                                        HorizontalAlignment="Stretch" Margin="0,0,0,8"
+                                        Click="btnEmitirListadoMensual_Click"/>
+                                <Button Content="Enviar por email" Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch"
+                                        Click="btnEnviarEmail_Click"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                                <Button Content="Ver stock actual" Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch" Margin="0,0,0,8"
+                                        Click="btnVerStock_Click"/>
+                                <Button Content="Verificar alertas" Style="{StaticResource DangerButton}"
+                                        HorizontalAlignment="Stretch"
+                                        Click="btnVerificarAlertas_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+        </Grid>
+    </Grid>
+</Window>

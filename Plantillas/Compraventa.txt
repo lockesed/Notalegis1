@@ -1,0 +1,112 @@
+ESCRITURA PÚBLICA DE COMPRAVENTA
+PROTOCOLO N° {NUMERO_PROTOCOLO}
+
+================================================================================
+
+En la ciudad de San Luis, República Argentina, a los {FECHA_LETRAS} días del mes de {MES} del año {ANIO}, ante mí, Escribano Público autorizante, comparecen:
+
+VENDEDOR:
+Nombre y Apellido: {VENDEDOR_NOMBRE}
+DNI: {VENDEDOR_DNI}
+Domicilio: {VENDEDOR_DOMICILIO}
+Estado Civil: {VENDEDOR_ESTADO_CIVIL}
+
+COMPRADOR:
+Nombre y Apellido: {CLIENTE_NOMBRE}
+DNI: {CLIENTE_DNI}
+Domicilio: {CLIENTE_DIRECCION}
+Teléfono: {CLIENTE_TELEFONO}
+Email: {CLIENTE_EMAIL}
+Estado Civil: {COMPRADOR_ESTADO_CIVIL}
+
+================================================================================
+
+OBJETO DE LA COMPRAVENTA:
+
+El VENDEDOR vende, cede y transfiere al COMPRADOR, quien compra y acepta para sí, el siguiente inmueble:
+
+Ubicación: {INMUEBLE_UBICACION}
+Nomenclatura Catastral: {INMUEBLE_NOMENCLATURA}
+Matrícula: {INMUEBLE_MATRICULA}
+Superficie: {INMUEBLE_SUPERFICIE} metros cuadrados
+
+Límites y Medidas:
+Norte: {INMUEBLE_LIMITE_NORTE}
+Sur: {INMUEBLE_LIMITE_SUR}
+Este: {INMUEBLE_LIMITE_ESTE}
+Oeste: {INMUEBLE_LIMITE_OESTE}
+
+================================================================================
+
+PRECIO Y FORMA DE PAGO:
+
+El precio total de la presente compraventa se fija en la suma de PESOS {PRECIO_MONTO} ({PRECIO_LETRAS}), que el COMPRADOR abona al VENDEDOR en este acto, en efectivo/transferencia bancaria, sirviendo la presente de suficiente recibo y carta de pago.
+
+================================================================================
+
+TÍTULO DE PROPIEDAD:
+
+El inmueble objeto de la presente escritura pertenece al VENDEDOR según consta en:
+- Matrícula: {TITULO_MATRICULA}
+- Tomo: {TITULO_TOMO}
+- Folio: {TITULO_FOLIO}
+- Año: {TITULO_ANIO}
+
+================================================================================
+
+DECLARACIONES:
+
+El VENDEDOR declara bajo juramento que:
+1. El inmueble se encuentra libre de toda deuda, gravamen, embargo o inhibición.
+2. No existen ocupantes del inmueble.
+3. Se encuentra al día con los impuestos y servicios.
+4. No existen mejoras en construcción sin declarar.
+
+El COMPRADOR declara conocer el estado del inmueble y lo acepta en las condiciones en que se encuentra.
+
+================================================================================
+
+POSESIÓN:
+
+La posesión del inmueble se hace efectiva en este acto, haciéndose el COMPRADOR responsable del mismo desde la fecha de la presente escritura.
+
+================================================================================
+
+GASTOS E IMPUESTOS:
+
+Los gastos de escrituración, honorarios notariales e impuestos que correspondan a la presente operación serán abonados por {GASTOS_A_CARGO}.
+
+================================================================================
+
+DOMICILIOS:
+
+Las partes constituyen domicilios especiales en los indicados precedentemente, donde serán válidas todas las notificaciones que se cursen.
+
+================================================================================
+
+Leída que les fue la presente escritura a los comparecientes, la encuentran conforme, ratifican su contenido y firman ante mí, doy fe.
+
+
+_________________________          _________________________
+{VENDEDOR_NOMBRE}                  {CLIENTE_NOMBRE}
+DNI: {VENDEDOR_DNI}                DNI: {CLIENTE_DNI}
+      VENDEDOR                           COMPRADOR
+
+
+
+_________________________
+ESCRIBANO PÚBLICO
+Registro N°: {ESCRIBANO_REGISTRO}
+Colegio de Escribanos de San Luis
+
+
+================================================================================
+
+OBSERVACIONES:
+{OBSERVACIONES}
+
+================================================================================
+
+Fecha de emisión: {FECHA_EMISION}
+Sistema: Notalegis - Escribanía Ejemplo
+Calle Falsa 123, San Luis

@@ -1,0 +1,103 @@
+ESCRITURA PÚBLICA DE PODER GENERAL
+PROTOCOLO N° {NUMERO_PROTOCOLO}
+
+================================================================================
+
+En la ciudad de San Luis, República Argentina, a los {FECHA_LETRAS} días del mes de {MES} del año {ANIO}, ante mí, Escribano Público autorizante, comparece:
+
+PODERDANTE (MANDANTE):
+Nombre y Apellido: {CLIENTE_NOMBRE}
+DNI: {CLIENTE_DNI}
+Domicilio: {CLIENTE_DIRECCION}
+Teléfono: {CLIENTE_TELEFONO}
+Email: {CLIENTE_EMAIL}
+Estado Civil: {PODERDANTE_ESTADO_CIVIL}
+
+APODERADO (MANDATARIO):
+Nombre y Apellido: {APODERADO_NOMBRE}
+DNI: {APODERADO_DNI}
+Domicilio: {APODERADO_DOMICILIO}
+Estado Civil: {APODERADO_ESTADO_CIVIL}
+
+================================================================================
+
+OBJETO DEL PODER:
+
+El PODERDANTE confiere PODER GENERAL amplio y suficiente al APODERADO para que en su nombre y representación pueda:
+
+1. ADMINISTRACIÓN:
+   - Administrar todos sus bienes muebles e inmuebles
+   - Cobrar y percibir todo lo que se le adeude
+   - Otorgar recibos y cartas de pago
+   - Realizar depósitos y extracciones bancarias
+
+2. DISPOSICIÓN:
+   - Comprar, vender, permutar bienes muebles e inmuebles
+   - Constituir hipotecas, prendas y demás garantías reales
+   - Cancelar hipotecas y gravámenes
+   - Realizar transferencias de dominio
+
+3. REPRESENTACIÓN JUDICIAL:
+   - Iniciar y contestar demandas
+   - Promover todo tipo de acciones y recursos
+   - Comparecer ante toda clase de tribunales
+   - Transar, conciliar y desistir
+
+4. REPRESENTACIÓN ADMINISTRATIVA:
+   - Gestionar ante organismos públicos y privados
+   - Realizar trámites ante AFIP, ANSES, Registro Civil
+   - Presentar declaraciones juradas
+   - Solicitar certificados y documentación
+
+5. FACULTADES ESPECIALES:
+   - Constituir sociedades
+   - Otorgar y revocar poderes
+   - Abrir y cerrar cuentas bancarias
+   - Realizar operaciones financieras
+
+================================================================================
+
+DURACIÓN:
+
+El presente poder tendrá vigencia desde la fecha de su otorgamiento y hasta su revocación expresa por parte del PODERDANTE.
+
+================================================================================
+
+ACEPTACIÓN:
+
+El APODERADO, presente en este acto, acepta el poder conferido y se compromete a ejercerlo con la diligencia debida.
+
+================================================================================
+
+DOMICILIOS:
+
+Las partes constituyen domicilios especiales en los indicados precedentemente.
+
+================================================================================
+
+Leída que les fue la presente escritura a los comparecientes, la encuentran conforme, ratifican su contenido y firman ante mí, doy fe.
+
+
+_________________________          _________________________
+{CLIENTE_NOMBRE}                   {APODERADO_NOMBRE}
+DNI: {CLIENTE_DNI}                 DNI: {APODERADO_DNI}
+    PODERDANTE                          APODERADO
+
+
+
+_________________________
+ESCRIBANO PÚBLICO
+Registro N°: {ESCRIBANO_REGISTRO}
+Colegio de Escribanos de San Luis
+
+
+================================================================================
+
+OBSERVACIONES:
+{OBSERVACIONES}
+
+================================================================================
+
+Fecha de emisión: {FECHA_EMISION}
+Sistema: Notalegis - Escribanía Ejemplo
+Calle Falsa 123, San Luis

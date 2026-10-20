@@ -1,0 +1,333 @@
+﻿<Window x:Class="Notalegis.Views.EscriturasView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Notalegis — Gestión de Escrituras"
+        Icon="/Resources/logo.png"
+        MinHeight="700" MinWidth="1024"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI"
+        UseLayoutRounding="True"
+        WindowState="Maximized"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Gestión de Escrituras Públicas" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="Estadísticas" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Margin="0,0,10,0" Click="btnEstadisticas_Click"/>
+                    <Button Content="Cerrar" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Click="btnCerrar_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido principal: sin ScrollViewer de página completa, para que la
+             grilla de escrituras tenga su propio scroll interno y las acciones de
+             abajo queden siempre visibles sin depender de la cantidad de datos. -->
+        <Grid Grid.Row="1" Margin="24,20,24,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ===== Panel izquierdo ===== -->
+                <ScrollViewer Grid.Column="0" Margin="0,0,12,0"
+                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Formulario -->
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Nueva Escritura Pública" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                            <ComboBox x:Name="cmbCliente" Margin="0,4,0,10"
+                                      materialDesign:HintAssist.Hint="Seleccionar Cliente *"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      DisplayMemberPath="NombreCompleto"
+                                      SelectedValuePath="Id"
+                                      IsEditable="True"/>
+
+                            <ComboBox x:Name="cmbTipoEscritura" Margin="0,4,0,10"
+                                      materialDesign:HintAssist.Hint="Tipo de Escritura *"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      DisplayMemberPath="Nombre"
+                                      SelectedValuePath="Id"/>
+
+                            <TextBox x:Name="txtNumeroProtocolo" Margin="0,4,0,10"
+                                     materialDesign:HintAssist.Hint="Número de Protocolo * (ej: 001/2024)"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <DatePicker x:Name="dpFecha" Margin="0,4,0,10"
+                                        materialDesign:HintAssist.Hint="Fecha de la Escritura *"
+                                        materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+
+                            <TextBox x:Name="txtObservaciones" Margin="0,4,0,10"
+                                     materialDesign:HintAssist.Hint="Observaciones (Opcional)"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     AcceptsReturn="True" TextWrapping="Wrap" Height="60"/>
+
+                            <ComboBox x:Name="cmbNacionalidad" Margin="0,4,0,10"
+                                      materialDesign:HintAssist.Hint="Nacionalidad"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}">
+                                <ComboBoxItem Content="Argentino/a"/>
+                                <ComboBoxItem Content="Chileno/a"/>
+                                <ComboBoxItem Content="Boliviano/a"/>
+                                <ComboBoxItem Content="Paraguayo/a"/>
+                                <ComboBoxItem Content="Uruguayo/a"/>
+                                <ComboBoxItem Content="Otro"/>
+                            </ComboBox>
+
+                            <ComboBox x:Name="cmbEstadoCivil" Margin="0,4,0,10"
+                                      materialDesign:HintAssist.Hint="Estado civil"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}"
+                                      SelectionChanged="cmbEstadoCivil_SelectionChanged">
+                                <ComboBoxItem Content="Soltero/a"/>
+                                <ComboBoxItem Content="Casado/a en primeras nupcias"/>
+                                <ComboBoxItem Content="Casado/a en segundas nupcias"/>
+                                <ComboBoxItem Content="Divorciado/a"/>
+                                <ComboBoxItem Content="Viudo/a"/>
+                            </ComboBox>
+
+                            <TextBox x:Name="txtNombreConyuge" Margin="0,4,0,10"
+                                     Visibility="Collapsed"
+                                     materialDesign:HintAssist.Hint="Nombre del cónyuge"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <DatePicker x:Name="dpFechaNacimiento" Margin="0,4,0,10"
+                                        materialDesign:HintAssist.Hint="Fecha de nacimiento"
+                                        materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisDatePicker}"/>
+
+                            <TextBox x:Name="txtCuilCuit" Margin="0,4,0,10"
+                                     materialDesign:HintAssist.Hint="CUIL / CUIT"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <!-- Archivo adjunto -->
+                            <Border x:Name="borderArchivoSeleccionado"
+                                    Visibility="Collapsed"
+                                    Background="{StaticResource PrimaryBlueLightBrush}"
+                                    BorderBrush="{StaticResource PrimaryBlueBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8" Padding="12" Margin="0,4,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets"
+                                               FontSize="16" Foreground="{StaticResource PrimaryBlueBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Archivo seleccionado:"
+                                                   FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock x:Name="txtArchivoSeleccionado"
+                                                   FontWeight="SemiBold" FontSize="12"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Style="{StaticResource IconButton}"
+                                            Click="btnQuitarArchivo_Click" ToolTip="Quitar archivo">
+                                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                                <Button Content="Limpiar" Style="{StaticResource SecondaryButton}"
+                                        Padding="14,8" Margin="0,0,10,0" Click="btnLimpiar_Click"/>
+                                <Button Content="Guardar" Style="{StaticResource PrimaryButton}"
+                                        Padding="14,8" Click="btnGuardar_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Panel IA -->
+                    <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Generador con IA" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                            <TextBlock Text="Adjuntá una plantilla y la IA generará la escritura basándose en ella."
+                                       FontSize="12" TextWrapping="Wrap"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,12"/>
+
+                            <!-- Plantilla adjunta -->
+                            <Border x:Name="borderPlantillaAdjunta"
+                                    Visibility="Collapsed"
+                                    Background="{StaticResource PrimaryBlueLightBrush}"
+                                    BorderBrush="{StaticResource PrimaryBlueBrush}"
+                                    BorderThickness="1" CornerRadius="8"
+                                    Padding="10" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets"
+                                               FontSize="14" Foreground="{StaticResource PrimaryBlueBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Plantilla adjunta:" FontSize="10"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock x:Name="txtPlantillaAdjunta" FontWeight="SemiBold"
+                                                   FontSize="12" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Style="{StaticResource IconButton}"
+                                            Click="btnQuitarPlantilla_Click" ToolTip="Remover plantilla">
+                                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <Button Content="+ Adjuntar plantilla" Style="{StaticResource SecondaryButton}"
+                                    HorizontalAlignment="Stretch" Margin="0,0,0,10"
+                                    Click="btnAdjuntarPlantilla_Click"/>
+
+                            <Button x:Name="btnGenerarConIA" Content="Generar con IA"
+                                    Style="{StaticResource PrimaryButton}"
+                                    HorizontalAlignment="Stretch" Margin="0,0,0,10"
+                                    IsEnabled="False"
+                                    Background="#8E44AD"
+                                    Click="btnGenerarConIA_Click">
+                                <Button.ToolTip>
+                                    <ToolTip Content="Genera la escritura basándose en la plantilla adjunta"/>
+                                </Button.ToolTip>
+                            </Button>
+
+                            <Separator Margin="0,4,0,10"/>
+
+                            <Button Content="Gestionar tipos de escritura" Style="{StaticResource SecondaryButton}"
+                                    HorizontalAlignment="Stretch"
+                                    Click="btnGestionarTipos_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                </ScrollViewer>
+
+                <!-- ===== Panel derecho ===== -->
+                <Grid Grid.Column="1" Margin="12,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Búsqueda -->
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="txtBuscar" Grid.Column="0"
+                                     materialDesign:HintAssist.Hint="Buscar por cliente, protocolo, tipo..."
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     TextChanged="txtBuscar_TextChanged"/>
+                            <Button Grid.Column="1" Style="{StaticResource IconButton}"
+                                    Margin="10,0,0,0" Click="btnActualizar_Click"
+                                    ToolTip="Actualizar lista">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="16" Foreground="{StaticResource PrimaryBlueBrush}"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- Lista de escrituras -->
+                    <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="0" Margin="0,0,0,12">
+                        <Grid>
+                            <DataGrid x:Name="dgEscrituras"
+                                      AutoGenerateColumns="False" CanUserAddRows="False"
+                                      IsReadOnly="True" SelectionMode="Single"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      EnableRowVirtualization="True"
+                                      Style="{StaticResource ModernDataGrid}"
+                                      ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                                      RowStyle="{StaticResource ModernDataGridRow}"
+                                      CellStyle="{StaticResource ModernDataGridCell}"
+                                      SelectionChanged="dgEscrituras_SelectionChanged"
+                                      MinHeight="300">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="N° Protocolo" Binding="{Binding NumeroProtocolo}" Width="120"/>
+                                    <DataGridTextColumn Header="Cliente" Binding="{Binding NombreCliente}" Width="*"/>
+                                    <DataGridTextColumn Header="Tipo" Binding="{Binding TipoEscritura}" Width="150"/>
+                                    <DataGridTextColumn Header="Fecha" Binding="{Binding FechaFormateada}" Width="100"/>
+                                    <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!-- Estado vacío -->
+                            <Border x:Name="borderSinEscrituras" Visibility="Collapsed"
+                                    Background="White" CornerRadius="12">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Margin="0,40">
+                                    <TextBlock Text="&#xE8A9;" FontFamily="Segoe MDL2 Assets"
+                                               FontSize="48" Foreground="{StaticResource BorderLightBrush}"
+                                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                                    <TextBlock Text="No hay escrituras registradas"
+                                               HorizontalAlignment="Center" FontSize="15"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Acciones sobre escritura seleccionada -->
+                    <Border Grid.Row="2" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Acciones sobre la escritura seleccionada"
+                                       FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                            <WrapPanel>
+                                <Button x:Name="btnVerDocumento" Content="Ver documento"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Padding="12,8" Margin="0,0,8,8"
+                                        IsEnabled="False" Click="btnVerDocumento_Click">
+                                    <Button.ToolTip>
+                                        <ToolTip Content="Vista previa del documento (.pdf, .docx, .txt)"/>
+                                    </Button.ToolTip>
+                                </Button>
+                                <Button Content="Abrir archivo" Style="{StaticResource PrimaryButton}"
+                                        Padding="12,8" Margin="0,0,8,8" Click="btnAbrirArchivo_Click"/>
+                                <Button Content="Editar" Style="{StaticResource SecondaryButton}"
+                                        Padding="12,8" Margin="0,0,8,8" Click="btnEditar_Click"/>
+                                <Button Content="Eliminar" Style="{StaticResource DangerButton}"
+                                        Padding="12,8" Margin="0,0,8,8" Click="btnEliminar_Click"/>
+                                <Button Content="Documentos adjuntos" Style="{StaticResource SecondaryButton}"
+                                        Padding="12,8" Margin="0,0,8,8" Click="btnDocumentos_Click"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+        </Grid>
+    </Grid>
+</Window>

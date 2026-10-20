@@ -1,0 +1,258 @@
+﻿<Window x:Class="NotalegisWPF.Views.ClientesView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Loaded="ClientesView_Loaded"
+        mc:Ignorable="d"
+        Title="Notalegis — Gestión de Clientes"
+        Icon="/Resources/logo.png"
+        Background="{StaticResource AppBgBrush}"
+        MinHeight="700" MinWidth="900"
+        Height="860" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI"
+        UseLayoutRounding="True"
+        WindowState="Maximized">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1"
+                Padding="24,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               Foreground="{StaticResource PrimaryBlueBrush}"
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Gestión de Clientes" FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="Ver inactivos" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Margin="0,0,10,0" Click="btnVerInactivos_Click"/>
+                    <Button Content="Exportar Excel" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Margin="0,0,10,0" Click="btnGenerarLista_Click"/>
+                    <Button Content="Emitir Lista PDF" Style="{StaticResource SecondaryButton}"
+                            Padding="14,7" Click="btnEmitirLista_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido: la tabla de clientes (Grid.Row="2") tiene su propio espacio
+             flexible y scroll interno; formulario, filtros y paginación quedan
+             siempre visibles sin depender de la cantidad de datos. -->
+        <Grid Grid.Row="1" Margin="24,20,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+                <!-- Formulario -->
+                <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Datos del cliente"
+                                   FontSize="15" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,0,0,16"/>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Col izquierda -->
+                            <TextBox x:Name="txtNombre" Grid.Row="0" Grid.Column="0" Margin="0,4,8,8"
+                                     materialDesign:HintAssist.Hint="Nombre"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtNombre_PreviewTextInput"/>
+
+                            <TextBox x:Name="txtApellido" Grid.Row="1" Grid.Column="0" Margin="0,4,8,8"
+                                     materialDesign:HintAssist.Hint="Apellido"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtApellido_PreviewTextInput"/>
+
+                            <TextBox x:Name="txtDocumento" Grid.Row="2" Grid.Column="0" Margin="0,4,8,8"
+                                     materialDesign:HintAssist.Hint="DNI/CUIT"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtDocumento_PreviewTextInput"/>
+
+                            <TextBox x:Name="txtTelefono" Grid.Row="3" Grid.Column="0" Margin="0,4,8,8"
+                                     materialDesign:HintAssist.Hint="Teléfono"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     PreviewTextInput="txtTelefono_PreviewTextInput"/>
+
+                            <!-- Col derecha -->
+                            <TextBox x:Name="txtEmail" Grid.Row="0" Grid.Column="1" Margin="8,4,0,8"
+                                     materialDesign:HintAssist.Hint="Email"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <TextBox x:Name="txtDireccion" Grid.Row="1" Grid.Column="1" Margin="8,4,0,8"
+                                     materialDesign:HintAssist.Hint="Dirección"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"/>
+
+                            <ComboBox x:Name="cmbEstado" Grid.Row="2" Grid.Column="1" Margin="8,4,0,8"
+                                      materialDesign:HintAssist.Hint="Estado"
+                                      materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisComboBox}">
+                                <ComboBoxItem Content="Activo"/>
+                                <ComboBoxItem Content="En Trámite"/>
+                                <ComboBoxItem Content="Finalizado"/>
+                                <ComboBoxItem Content="Suspendido"/>
+                            </ComboBox>
+
+                            <TextBox x:Name="txtObservaciones" Grid.Row="3" Grid.Column="1" Margin="8,4,0,8"
+                                     materialDesign:HintAssist.Hint="Observaciones"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     AcceptsReturn="True" TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Height="60"/>
+
+                            <!-- Botones -->
+                            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                                        Orientation="Horizontal" HorizontalAlignment="Right"
+                                        Margin="0,8,0,0">
+                                <Button Content="Guardar cliente" Style="{StaticResource PrimaryButton}"
+                                        Click="BtnGuardar_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Barra de filtros -->
+                <Border Grid.Row="1" Style="{StaticResource FilterBarBorder}">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <TextBlock Text="Buscar por nombre o DNI" FontSize="12" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBox x:Name="txtBuscar" Width="280"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Height="50"
+                                     TextChanged="txtBuscar_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Margin="12,0,0,0">
+                            <TextBlock Text="Filtro de Estado" FontSize="12" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <ComboBox x:Name="cmbFiltroEstado" Width="200"
+                                      Style="{StaticResource NotalegisComboBox}"
+                                      Height="50"
+                                      SelectionChanged="cmbFiltroEstado_SelectionChanged">
+                                <ComboBoxItem Content="Todos"/>
+                                <ComboBoxItem Content="Activo"/>
+                                <ComboBoxItem Content="En Trámite"/>
+                                <ComboBoxItem Content="Finalizado"/>
+                                <ComboBoxItem Content="Suspendido"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tabla de clientes -->
+                <Border Grid.Row="2" Style="{StaticResource CardBorder}" Padding="0" Margin="0,0,0,12">
+                    <Grid>
+                        <DataGrid x:Name="dgvClientes"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow"
+                                  VirtualizingPanel.IsVirtualizing="True"
+                                  VirtualizingPanel.VirtualizationMode="Recycling"
+                                  EnableRowVirtualization="True"
+                                  Style="{StaticResource ModernDataGrid}"
+                                  ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                                  RowStyle="{StaticResource ModernDataGridRow}"
+                                  CellStyle="{StaticResource ModernDataGridCell}"
+                                  MinHeight="300">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="55"/>
+                                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="120"/>
+                                <DataGridTextColumn Header="Apellido" Binding="{Binding Apellido}" Width="120"/>
+                                <DataGridTextColumn Header="DNI/CUIT" Binding="{Binding DNI}" Width="100"/>
+                                <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" Width="100"/>
+                                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="160"/>
+                                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
+                                <DataGridTemplateColumn Header="Acciones" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Style="{StaticResource IconButton}"
+                                                        ToolTip="Editar" Click="btnEditar_Click">
+                                                    <TextBlock Text="&#xE70F;" Style="{StaticResource AccionIconoEditar}"/>
+                                                </Button>
+                                                <Button Style="{StaticResource IconButton}"
+                                                        ToolTip="Eliminar" Click="btnEliminar_Click">
+                                                    <TextBlock Text="&#xE107;" Style="{StaticResource AccionIconoEliminar}"/>
+                                                </Button>
+                                                <Button Style="{StaticResource IconButton}"
+                                                        ToolTip="Consultar" Click="btnConsultar_Click">
+                                                    <TextBlock Text="&#xE8FF;" Style="{StaticResource AccionIconoSecundario}"/>
+                                                </Button>
+                                                <Button Style="{StaticResource IconButton}"
+                                                        ToolTip="Documentos" Click="btnDocumentos_Click">
+                                                    <TextBlock Text="&#xE8A5;" Style="{StaticResource AccionIconoSecundario}"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Estado vacío -->
+                        <Border x:Name="borderSinClientes" Visibility="Collapsed"
+                                Background="White" CornerRadius="12">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Margin="0,40">
+                                <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="48" Foreground="{StaticResource BorderLightBrush}"
+                                           HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                                <TextBlock Text="No hay clientes registrados"
+                                           HorizontalAlignment="Center" FontSize="15"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Text="Completá el formulario de arriba para agregar el primero."
+                                           HorizontalAlignment="Center" FontSize="12"
+                                           Foreground="{StaticResource TextMutedBrush}"
+                                           Margin="0,6,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Paginación -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+                    <Button x:Name="btnPaginaAnterior" Content="◀ Anterior"
+                            Style="{StaticResource SecondaryButton}" Padding="16,7"
+                            Click="btnPaginaAnterior_Click"/>
+                    <TextBlock x:Name="txtInfoPagina" Text="Página 1 de 1"
+                               VerticalAlignment="Center" FontSize="13"
+                               Foreground="{StaticResource TextSecondaryBrush}" Margin="20,0"/>
+                    <Button x:Name="btnPaginaSiguiente" Content="Siguiente ▶"
+                            Style="{StaticResource SecondaryButton}" Padding="16,7"
+                            Click="btnPaginaSiguiente_Click"/>
+                </StackPanel>
+
+        </Grid>
+    </Grid>
+</Window>

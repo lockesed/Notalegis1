@@ -1,0 +1,161 @@
+﻿<Window x:Class="Notalegis.Views.ConsultarClienteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Consultar Cliente"
+        Icon="/Resources/logo.png"
+        Height="580"
+        Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header azul -->
+        <Border Grid.Row="0" Style="{StaticResource DialogHeaderBorder}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                               Foreground="White" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Consultar Cliente" FontSize="17" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="16,16,16,0">
+
+                <!-- Información Personal -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Información Personal" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" x:Name="txtNombre" IsReadOnly="True" Margin="0,8"
+                                     materialDesign:HintAssist.Hint="Nombre"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     materialDesign:TextFieldAssist.HasClearButton="False"/>
+
+                            <TextBox Grid.Column="2" x:Name="txtApellido" IsReadOnly="True" Margin="0,8"
+                                     materialDesign:HintAssist.Hint="Apellido"
+                                     materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                     materialDesign:TextFieldAssist.HasClearButton="False"/>
+                        </Grid>
+
+                        <TextBox x:Name="txtDocumento" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="DNI/CUIT"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Información de Contacto -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE8EA;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Información de Contacto" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtTelefono" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Teléfono"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+
+                        <TextBox x:Name="txtEmail" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Email"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+
+                        <TextBox x:Name="txtDireccion" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Dirección"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Estado del Cliente -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Estado del Cliente" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtEstado" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Estado Actual"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+
+                        <!-- Indicador visual del estado -->
+                        <Border x:Name="borderEstado" CornerRadius="4" Padding="8,4" Margin="0,8"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="iconEstado" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock x:Name="txtEstadoIndicador" FontSize="12" FontWeight="Medium"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Observaciones -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Observaciones" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PrimaryBlueBrush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtObservaciones" IsReadOnly="True" Margin="0,8"
+                                 materialDesign:HintAssist.Hint="Observaciones del Cliente"
+                                 materialDesign:HintAssist.Foreground="{StaticResource TextSecondaryBrush}" materialDesign:HintAssist.Background="White" Style="{StaticResource NotalegisTextBox}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Height="80"
+                                 VerticalScrollBarVisibility="Auto"
+                                 materialDesign:TextFieldAssist.HasClearButton="False"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Style="{StaticResource DialogFooterBorder}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cerrar" Style="{StaticResource PrimaryButton}"
+                        Padding="20,8"
+                        Click="btnCerrar_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
